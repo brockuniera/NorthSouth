@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AbstractUnitController : MonoBehaviour {
+//Abstract base class for all units
+public abstract class AbstractUnit : MonoBehaviour{
+	//Relevant state
+	public int Damage = 1;
+	public int Health = 1;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	//input
+	protected InputStruct input;
+	public void SetInput(InputStruct i){ input = i; }
+
+	//Update() should be defined, so do that in derived classes idiot
+
 }
+

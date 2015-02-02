@@ -20,3 +20,6 @@ sysinfo.txt
 *~
 *.swp
 *.swo
+
+#OSX things
+.DS_Store

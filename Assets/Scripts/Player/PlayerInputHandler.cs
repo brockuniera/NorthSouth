@@ -2,15 +2,18 @@
 using System.Collections;
 
 //this abstracts unity's input
+// TODO
 // needs to work for 2 players
-// include stick support
+// include stick support, deadzone etc
+// inlcude secondary, tertiary bindings, etc
+// way for users to rebind keys
 public class PlayerInputHandler : MonoBehaviour {
 
 	//Properties
-	public int xAxis{
+	public sbyte xAxis{
 		get{ return x; }
 	}
-	public int yAxis{
+	public sbyte yAxis{
 		get{ return y; }
 	}
 	public bool aButton{
@@ -20,8 +23,10 @@ public class PlayerInputHandler : MonoBehaviour {
 		get{ return b; }
 	}
 
-	//current binds
-	private KeyBindings binds;
+	//default values for buttons and dirs
+	static readonly public sbyte XDefault = 0;
+	static readonly public sbyte YDefault = 0;
+	static readonly public bool ADefault = false;
 
 	//key abstraction with defaults
 	private class KeyBindings{
@@ -32,16 +37,29 @@ public class PlayerInputHandler : MonoBehaviour {
 		public KeyCode right = KeyCode.D;
 
 		//actions
-		public KeyCode a = KeyCode.J;
-		public KeyCode b = KeyCode.K;
+		public KeyCode a = KeyCode.K;
+		public KeyCode b = KeyCode.J;
 	}
 
-	private int x, y;
+	//current binds
+	private KeyBindings binds;
+
+	private sbyte x, y;
 	private bool a, b;
 
+	//initialize
+	void Start(){
+		SetDefaultBinds();
+	}
 
-	//read input
-	void Update(){
+	//Defaults the binds class
+	public void SetDefaultBinds(){
+		//is this really how I should do this?
+		binds = new KeyBindings();
+	}
+
+	//updates input variables
+	public void UpdateInput(){
 		if(Input.GetKey(binds.right))
 			x = 1;
 		else if(Input.GetKey(binds.left))
@@ -60,9 +78,5 @@ public class PlayerInputHandler : MonoBehaviour {
 		b = Input.GetKey(binds.b);
 	}
 
-	public void SetDefaultBinds(){
-		//is this really how I should do this?
-		binds = new KeyBindings();
-	}
 
 }

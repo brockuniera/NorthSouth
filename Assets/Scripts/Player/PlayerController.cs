@@ -12,44 +12,75 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour {
 
 	//GOs I can control
-	private List<Transform> units;
-	private Transform currentUnit;
+	private List<AbstractUnit> units;
+	private AbstractUnit currentUnit;
 
 	//input handler
 	private PlayerInputHandler input;
 
+	//input to be given to units
+	private InputStruct unitInput;
+
 	void Start(){
-		units = new List<Transform>();
-		units.Capacity = 3; //TODO
+		//populate list of units, who are probably children?
+		units = new List<AbstractUnit>();
+		
 		foreach(Transform child in transform){
-			units.Add(child);
+			var comp = child.GetComponent<AbstractUnit>();
+			if(comp)
+				units.Add(comp);
 		}
 
+		//assign the first child to currentUnit
+		if(units.Count == 0)
+			Debug.LogError("No children of player with AbstractUnit script!");
+		else
+			currentUnit = units[0];
+
+		//input reference
 		input = GetComponent<PlayerInputHandler>();
 	}
 	
-	void FixedUpdate(){
+	void Update(){
 		//
-		//Process and distribute input
+		//Process input
 		//
 
-		//change unit then ignore other input
+		input.UpdateInput();
+
+		//generate input struct
+		//buffer inputs as well
+		// ie if input.x is not default, then update it
+		unitInput.x = input.xAxis != PlayerInputHandler.XDefault ?
+			input.xAxis : unitInput.x;
+		unitInput.y = input.yAxis != PlayerInputHandler.YDefault ?
+			input.yAxis : unitInput.y;
+		unitInput.a = input.aButton != PlayerInputHandler.ADefault ?
+			input.aButton : unitInput.a;
+
+		//change unit on b button
+		// also have a method to directly change to a unit, thank you
 		if(input.bButton){
 			ChangeControlledUnit();
-			return;
 		}
-
-		//tell current thing to attack
-		if(input.aButton){
-			//units.
-		}
-
-		//tell current thing to move
-
 
 	}
 
-	private void ChangeControlledUnit(){
+	//This FixedUpdate() should happen first, before any other unit
+	// is there a better way to ensure this than by doing it manually?
+	// 1) We could enumerate thru children and tell them to run
+	void FixedUpdate(){
+		//pass input to unit
+		currentUnit.SetInput(unitInput);
 
+		//clear input
+		// for use with buffering
+		unitInput.x = PlayerInputHandler.XDefault;
+		unitInput.y = PlayerInputHandler.YDefault;
+		unitInput.a = PlayerInputHandler.ADefault;
+	}
+
+	private void ChangeControlledUnit(){
+		//TODO lol
 	}
 }
