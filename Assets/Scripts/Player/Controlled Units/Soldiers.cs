@@ -88,6 +88,11 @@ public class Soldiers : AbstractUnit{
 			return;
 		}
 
+
+		//
+		//Movement
+		//
+
 		//Directions!
 		//   +y  
 		//    |
@@ -98,13 +103,15 @@ public class Soldiers : AbstractUnit{
 		//if both inputs, use _diagSpeedComponent
 		float speed = input.x != 0 && input.y != 0 ? _diagSpeedComponent : MoveSpeed;
 
+		//change velocity
 		_rb2d.velocity = new Vector2(input.x, input.y) * speed;
 		
 	}
 
 	//tell sub units to shoot
 	private void Shoot(){
-		Instantiate(Bullet, _rb2d.position, Quaternion.identity);
+		Rigidbody2D r = Instantiate(Bullet, _rb2d.position, Quaternion.identity) as Rigidbody2D;
+		r.velocity = new Vector2(BulletSpeed, 0);
 	}
 
 }
