@@ -9,7 +9,7 @@ public class Soldiers : AbstractUnit{
 	//
 
 	//'Rook' move speed
-	public float MoveSpeed = 10;
+	public float MoveSpeed = 10f;
 	//'Bishop' move speed, derived from MoveSpeed
 	private float _diagSpeedComponent;
 
@@ -28,15 +28,23 @@ public class Soldiers : AbstractUnit{
 
 	//For attack animation leadup and cool down
 	//These happen in consecutive order
-	//ie the whole animation stops at PostAttackFrame
+	// ie the whole animation stops at PostAttackFrame
 	//
 	//'Frames' means FixedUpdate()
 	public int PreAttackFrame = 10;
-	public int AttackShootFrame = 20;
-	public int PostAttackFrame = 30;
+	public int AttackShootFrame = 10;
 
 	//frame counter
 	private int _frame = 0;
+
+	//
+	//Bullets
+	//
+	
+
+	public Rigidbody2D Bullet;
+	public float BulletSpeed = 10f;
+
 
 	//
 	//Code
@@ -51,17 +59,20 @@ public class Soldiers : AbstractUnit{
 
 	//move around, attack
 	void FixedUpdate(){
+		
+		//attacking has 3 distinct parts
+		//and it also stops movement
 		if(_attacking){
-			++_frame;
 
-			if(_frame == PreAttackFrame){
+			_frame++;
+
+			if(_frame == 1){
 				print("Getting ready...");
-			}else if(_frame == AttackShootFrame){
+			}else if(_frame == PreAttackFrame){
 				print("...Fire!...");
 				Shoot();
-			}else if(_frame == PostAttackFrame){ 
+			}else if(_frame == PreAttackFrame + AttackShootFrame){ 
 				print("...Done");
-				_frame = 0;
 				_attacking = false;
 			}else{
 			}
@@ -69,13 +80,15 @@ public class Soldiers : AbstractUnit{
 			return;
 		}
 
-		//if attack, change state
+		//if attack, change state, stop moving
 		if(input.a){
 			_attacking = true;
 			_rb2d.velocity = Vector2.zero;
+			_frame = 0;
 			return;
 		}
 
+		//Directions!
 		//   +y  
 		//    |
 		//-x -0- +x
@@ -85,12 +98,14 @@ public class Soldiers : AbstractUnit{
 		//if both inputs, use _diagSpeedComponent
 		float speed = input.x != 0 && input.y != 0 ? _diagSpeedComponent : MoveSpeed;
 
-		_rb2d.velocity = new Vector2(speed * input.x, speed * input.y);
+		_rb2d.velocity = new Vector2(input.x, input.y) * speed;
 		
 	}
 
 	//tell sub units to shoot
-	private void Shoot(){}
+	private void Shoot(){
+		Instantiate(Bullet, _rb2d.position, Quaternion.identity);
+	}
 
 }
 
