@@ -1,0 +1,5 @@
+Subunits are the bottom of the hierarchy. They're responsible for drawing
+themselves, shooting/attacking and whatever else.
+They should all be triggered by the Act() method of their parents because
+using unity's update/fixedupdate and trying to guaruntee an order is annoying
+and Act() is a more logical approach.

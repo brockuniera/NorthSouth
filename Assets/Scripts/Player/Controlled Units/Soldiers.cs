@@ -1,7 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
+//For List<T>
+using System.Collections.Generic;
+
+
 //'Soldiers' type of unit
+//create function to pass functions/actions to all children?
 public class Soldiers : AbstractUnit{
 
 	//
@@ -23,27 +28,36 @@ public class Soldiers : AbstractUnit{
 
 	//Possible states
 	private bool _attacking = false;
-	//enum SoldierState {Normal, PreAttack, AttackShoot, PostAttack};
-	//private SoldierState state = SoldierState.Normal;
 
 	//For attack animation leadup and cool down
-	//These happen in consecutive order
+	// These happen in consecutive order
 	// ie the whole animation stops at PostAttackFrame
 	//
 	//'Frames' means FixedUpdate()
 	public int PreAttackFrame = 10;
 	public int AttackShootFrame = 10;
 
-	//frame counter
+	//frame counter for animation timing in FixedUpdate
 	private int _frame = 0;
+
 
 	//
 	//Bullets
 	//
 	
 
-	public Rigidbody2D Bullet;
+	//Bullet prefab
+	public Bullet Projectile;
+	//Speed the Bullet travels
 	public float BulletSpeed = 10f;
+	
+
+	//
+	//Subunits
+	//
+
+	//SubSoldier might be a canidate for abstraction...
+	private List<SubSoldier> units;
 
 
 	//
@@ -53,13 +67,32 @@ public class Soldiers : AbstractUnit{
 
 	void Start(){
 		_diagSpeedComponent = MoveSpeed / Mathf.Sqrt(2);
-
 		_rb2d = rigidbody2D;
+
+		//populate list of controlled units
+		units = new List<SubSoldier>();
+
+		foreach(Transform child in transform){
+			var comp = child.GetComponent<SubSoldier>();
+			if(comp)
+				units.Add(comp);
+		}
+		
+		//TODO:set layers recursivley throughout children
 	}
+
+
+
 
 	//move around, attack
 	void FixedUpdate(){
-		
+		//we're iterating through and telling each to act()
+		//instead of reying on unity's update()
+		foreach(SubSoldier ss in units){
+			ss.Act();
+			ss.GetAnimator().SetBool("IsMoving", _rb2d.velocity != Vector2.zero);
+		}
+
 		//attacking has 3 distinct parts
 		//and it also stops movement
 		if(_attacking){
@@ -108,10 +141,17 @@ public class Soldiers : AbstractUnit{
 		
 	}
 
+	
 	//tell sub units to shoot
 	private void Shoot(){
-		Rigidbody2D r = Instantiate(Bullet, _rb2d.position, Quaternion.identity) as Rigidbody2D;
-		r.velocity = new Vector2(BulletSpeed, 0);
+		//create bullet
+		foreach(SubSoldier ss in units){
+			Instantiate(Projectile, ss.transform.position, Quaternion.identity);
+
+		}
+
+		//set the bullet's layer to 'P1 hitbox'
+		//go.layer = /*TODO get hitbox layer */
 	}
 
 }
