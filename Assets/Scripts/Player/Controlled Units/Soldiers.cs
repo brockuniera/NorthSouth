@@ -48,8 +48,6 @@ public class Soldiers : AbstractUnit{
 
 	//Bullet prefab
 	public Bullet Projectile;
-	//Speed the Bullet travels
-	public float BulletSpeed = 10f;
 	
 
 	//
@@ -58,6 +56,14 @@ public class Soldiers : AbstractUnit{
 
 	//SubSoldier might be a canidate for abstraction...
 	private List<SubSoldier> units;
+	public void RemoveFromList(SubSoldier ss){
+		if(ss == null)
+			return;
+		units.Remove(ss);
+
+		if(units.Count == 0)
+			Destroy(gameObject);
+	}
 
 
 	//
@@ -65,24 +71,25 @@ public class Soldiers : AbstractUnit{
 	//
 
 
-	void Start(){
+	void Awake(){
 		_diagSpeedComponent = MoveSpeed / Mathf.Sqrt(2);
 		_rb2d = rigidbody2D;
 
+		print(playerNumber);
+
 		//populate list of controlled units
 		units = new List<SubSoldier>();
-
 		foreach(Transform child in transform){
 			var comp = child.GetComponent<SubSoldier>();
-			if(comp)
+			child.gameObject.layer = LayerMask.NameToLayer("Player " + 
+					(playerNumber == 1 ? '1' : '2'));
+			if(comp){
 				units.Add(comp);
+			}
 		}
 		
 		//TODO:set layers recursivley throughout children
 	}
-
-
-
 
 	//move around, attack
 	void FixedUpdate(){
@@ -107,7 +114,6 @@ public class Soldiers : AbstractUnit{
 			}else if(_frame == PreAttackFrame + AttackShootFrame){ 
 				print("...Done");
 				_attacking = false;
-			}else{
 			}
 
 			return;
@@ -146,12 +152,10 @@ public class Soldiers : AbstractUnit{
 	private void Shoot(){
 		//create bullet
 		foreach(SubSoldier ss in units){
-			Instantiate(Projectile, ss.transform.position, Quaternion.identity);
-
+			Bullet go = Instantiate(Projectile, ss.transform.position,
+					Quaternion.identity) as Bullet;
+			go.Initialize(playerNumber);
 		}
-
-		//set the bullet's layer to 'P1 hitbox'
-		//go.layer = /*TODO get hitbox layer */
 	}
 
 }

@@ -7,8 +7,8 @@ using System.Collections;
 // include stick support, deadzone etc
 // inlcude secondary, tertiary bindings, etc
 // way for users to rebind keys
+// THERE REALLYREALLY SHOULD BE A BETTER WAY TO DO THIS
 public class PlayerInputHandler : MonoBehaviour {
-
 	//Properties
 	public sbyte xAxis{
 		get{ return x; }
@@ -27,6 +27,8 @@ public class PlayerInputHandler : MonoBehaviour {
 	static readonly public sbyte XDefault = 0;
 	static readonly public sbyte YDefault = 0;
 	static readonly public bool ADefault = false;
+
+
 
 	//key abstraction with defaults
 	private class KeyBindings{
@@ -47,15 +49,36 @@ public class PlayerInputHandler : MonoBehaviour {
 	private sbyte x, y;
 	private bool a, b;
 
-	//initialize
-	void Start(){
-		SetDefaultBinds();
-	}
 
-	//Defaults the binds class
-	public void SetDefaultBinds(){
-		//is this really how I should do this?
-		binds = new KeyBindings();
+	//
+	//Methods
+	//
+
+
+	//Sets the instance's keybindings to the default for that player
+	public void SetPlayerKeyBindings(int playernum){
+		//really gross code :(
+		KeyBindings kb = new KeyBindings();
+		switch(playernum){
+		case 1:
+			//KeyBindings defaults to player one's binds
+			break;
+
+		case 2:
+			kb.up    = KeyCode.UpArrow;
+			kb.down  = KeyCode.DownArrow;
+			kb.left  = KeyCode.LeftArrow;
+			kb.right = KeyCode.RightArrow;
+			kb.a = KeyCode.Z;
+			kb.b = KeyCode.X;
+			break;
+
+		default:
+			Debug.LogError("invalid playernum!");
+			break;
+		}
+
+		binds = kb;
 	}
 
 	//updates input variables
@@ -77,6 +100,4 @@ public class PlayerInputHandler : MonoBehaviour {
 		a = Input.GetKey(binds.a);
 		b = Input.GetKey(binds.b);
 	}
-
-
 }

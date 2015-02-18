@@ -13,12 +13,15 @@ public class Bullet : MonoBehaviour {
 	//Life time in FixedUpdates
 	public int LifeTime = 50;
 
-	void Start(){
-		//set velocity
-		//should change based on player, ie going left or right <--TODO
-		rigidbody2D.velocity = new Vector2(Speed, 0);
-	}
+	//setup this bullet
+	public void Initialize(int playerNum){
+		//player 1 shoots right; p2 shoots left
+		float vel = playerNum == 1 ? Speed : -Speed;
+		rigidbody2D.velocity = new Vector2(vel, 0);
 
+		//the hitbox layer is the layer after the player layer
+		gameObject.layer = LayerMask.NameToLayer(playerNum == 1 ?  "P1 Hitbox" : "P2 Hitbox");
+	}
 
 	//frame counter, for life time
 	private int _frame = 0;
@@ -28,11 +31,22 @@ public class Bullet : MonoBehaviour {
 		}
 	}
 
-	void OnCollision2D(){
-		//TODO
+	//TODO
+	//we need to abstract the idea of subunit, or create a shootable interface
+	//TODO
+	void OnTriggerEnter2D(Collider2D col){
+		SubSoldier ss;
+		if(ss = col.transform.GetComponent<SubSoldier>()){
+			ss.InflictDamage(damage);
+		}
+		Die();
 	}
 
-	private void Die(){
+	void OnColliderEnter2D(){
+		Die();
+	}
+
+	void Die(){
 		Destroy(gameObject);
 	}
 }
