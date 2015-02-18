@@ -11,7 +11,10 @@ using System.Collections.Generic;
 //children are controlled units
 public class PlayerController : MonoBehaviour {
 
-	//GOs I can control
+	//which player this is
+	private int playerNumber;
+
+	//GOs I control
 	private List<AbstractUnit> units;
 	private AbstractUnit currentUnit;
 
@@ -21,24 +24,40 @@ public class PlayerController : MonoBehaviour {
 	//input to be given to units
 	private InputStruct unitInput;
 
-	void Start(){
-		//populate list of units, who are probably children?
+	void Awake(){
+		//get player number from name(probably a bad idea)
+		//split name by spaces and get the second string returned
+		string s = name.Split(' ')[1];
+		if(s != null)
+			playerNumber = System.Convert.ToInt32(s);
+		else{
+			Debug.LogError("This Player has a malformed name! : " + name );
+			Application.Quit(); // oh man ! :OOOO
+		}
+
+		input = GetComponent<PlayerInputHandler>();
+		input.SetPlayerKeyBindings(playerNumber);
+
+		//setup layers
+		// layer is based off name
+		gameObject.layer = LayerMask.NameToLayer(name);
+
+
+		//populate list of units, who are children
 		units = new List<AbstractUnit>();
-		
 		foreach(Transform child in transform){
 			var comp = child.GetComponent<AbstractUnit>();
-			if(comp)
+			if(comp){
+				comp.SetPlayerNumber(playerNumber);
 				units.Add(comp);
+			}
 		}
 
 		//assign the first child to currentUnit
-		if(units.Count == 0)
-			Debug.LogError("No children of player with AbstractUnit script!");
-		else
+		if(units.Count != 0)
 			currentUnit = units[0];
-
-		//input reference
-		input = GetComponent<PlayerInputHandler>();
+		else
+			Debug.LogError("No children of player with AbstractUnit script!");
 	}
 	
 	void Update(){
@@ -71,7 +90,7 @@ public class PlayerController : MonoBehaviour {
 	// 1) We could enumerate thru children and tell them to run
 	void FixedUpdate(){
 		//pass input to unit
-		currentUnit.SetInput(unitInput);
+		currentUnit.InputMessage(unitInput);
 
 		//clear input
 		// for use with buffering
