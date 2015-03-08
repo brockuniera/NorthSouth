@@ -1,13 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-//For List<T>
-using System.Collections.Generic;
-
 
 //'Soldiers' type of unit
 //create function to pass functions/actions to all children?
-public class Soldiers : AbstractUnit{
+public class Soldiers : AbstractUnitController{
 
 	//
 	//Movement
@@ -23,17 +20,17 @@ public class Soldiers : AbstractUnit{
 
 
 	//
-	//FSM, for attacking
+	//Very basic FSM, for attacking
 	//
 
-	//Possible states
+	//literally just 1 state
 	private bool _attacking = false;
 
-	//For attack animation leadup and cool down
+	//For attack animation lead up and cool down
 	// These happen in consecutive order
 	// ie the whole animation stops at PostAttackFrame
 	//
-	//'Frames' means FixedUpdate()
+	//I define 'frame' to be 1 call to FixedUpdate()
 	public int PreAttackFrame = 10;
 	public int AttackShootFrame = 10;
 
@@ -45,57 +42,30 @@ public class Soldiers : AbstractUnit{
 	//Bullets
 	//
 	
-
-	//Bullet prefab
+	//Bullet prefab to use for shooting
 	public Bullet Projectile;
 	
 
 	//
-	//Subunits
-	//
-
-	//SubSoldier might be a canidate for abstraction...
-	private List<SubSoldier> units;
-	public void RemoveFromList(SubSoldier ss){
-		if(ss == null)
-			return;
-		units.Remove(ss);
-
-		if(units.Count == 0)
-			Destroy(gameObject);
-	}
-
-
-	//
-	//Code
+	//Unity Callbacks
 	//
 
 
-	void Awake(){
+	void Start(){
+		//Moving diagonally
 		_diagSpeedComponent = MoveSpeed / Mathf.Sqrt(2);
+		//caching :^)
 		_rb2d = rigidbody2D;
 
-		print(playerNumber);
-
-		//populate list of controlled units
-		units = new List<SubSoldier>();
-		foreach(Transform child in transform){
-			var comp = child.GetComponent<SubSoldier>();
-			child.gameObject.layer = LayerMask.NameToLayer("Player " + 
-					(playerNumber == 1 ? '1' : '2'));
-			if(comp){
-				units.Add(comp);
-			}
-		}
-		
-		//TODO:set layers recursivley throughout children
+		//Debugging to figure out who I belong to
+		Debug.Log(playerNumber);
 	}
 
-	//move around, attack
+	//Move and attack
 	void FixedUpdate(){
 		//we're iterating through and telling each to act()
-		//instead of reying on unity's update()
-		foreach(SubSoldier ss in units){
+		//instead of relying on unity's update()
+		foreach(SubSoldier ss in _controlledSubUnits){
 			ss.Act();
 			ss.GetAnimator().SetBool("IsMoving", _rb2d.velocity != Vector2.zero);
 		}
@@ -103,19 +73,19 @@ public class Soldiers : AbstractUnit{
 		//attacking has 3 distinct parts
 		//and it also stops movement
 		if(_attacking){
-
 			_frame++;
 
 			if(_frame == 1){
 				print("Getting ready...");
 			}else if(_frame == PreAttackFrame){
 				print("...Fire!...");
-				Shoot();
+				Attack();
 			}else if(_frame == PreAttackFrame + AttackShootFrame){ 
 				print("...Done");
 				_attacking = false;
 			}
 
+			//We don't want to process movement if we're attacking
 			return;
 		}
 
@@ -148,10 +118,10 @@ public class Soldiers : AbstractUnit{
 	}
 
 	
-	//tell sub units to shoot
-	private void Shoot(){
+	//tell SubSoldier to shoot
+	private void Attack(){
 		//create bullet
-		foreach(SubSoldier ss in units){
+		foreach(SubSoldier ss in _controlledSubUnits){
 			Bullet go = Instantiate(Projectile, ss.transform.position,
 					Quaternion.identity) as Bullet;
 			go.Initialize(playerNumber);
