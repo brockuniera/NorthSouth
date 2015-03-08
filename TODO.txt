@@ -1,0 +1,4 @@
+New branch: use just one generic, recursive container class instead of abstract classes for every thing
+
+BUGS:
+	Soldiers kill themselves when they shoot. This is probably because the layers are messed up.

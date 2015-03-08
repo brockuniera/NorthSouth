@@ -15,8 +15,8 @@ public class PlayerController : MonoBehaviour {
 	private int playerNumber;
 
 	//GOs I control
-	private List<AbstractUnit> units;
-	private AbstractUnit currentUnit;
+	private List<AbstractUnitController> units;
+	private AbstractUnitController currentUnit;
 
 	//input handler
 	private PlayerInputHandler input;
@@ -44,9 +44,9 @@ public class PlayerController : MonoBehaviour {
 
 
 		//populate list of units, who are children
-		units = new List<AbstractUnit>();
+		units = new List<AbstractUnitController>();
 		foreach(Transform child in transform){
-			var comp = child.GetComponent<AbstractUnit>();
+			var comp = child.GetComponent<AbstractUnitController>();
 			if(comp){
 				comp.SetPlayerNumber(playerNumber);
 				units.Add(comp);
@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour {
 		if(units.Count != 0)
 			currentUnit = units[0];
 		else
-			Debug.LogError("No children of player with AbstractUnit script!");
+			Debug.LogError("No children of player with AbstractUnitController script!");
 	}
 	
 	void Update(){
