@@ -5,32 +5,55 @@ using System.Collections;
 //and other initializations
 public class PlayerSpawner : MonoBehaviour {
 
+	//
+	//Prefabs to use
+	//
+	
+	public GameObject []Units;
 
 	//
 	//Private data
 	//
 
-	//References to Players 1 and 2
-	private GameObject _Player1, _Player2;
+	//References to Players
+	private GameObject []_players;
 
 
 	//
 	//Unity callbacks
 	//
 
-	void Start(){
+	void Awake(){
 		//Get references to Players 1 and 2
-		if(!(_Player1 = GameObject.Find("Player 1")) || !(_Player2 = GameObject.Find("Player 2"))){
-			Debug.LogError("Couldn't find Players in Hierchay");
+		_players = GameObject.FindGameObjectsWithTag("Player");
+		if(_players.Length < 2){
+			Debug.LogError("Couldn't find at least 2 Players in Hierchay");
 			Application.Quit();
 		}
+
+		//setup array
+		//Units = new GameObject[3]; //Not need because of Unity?
 	}
-	
+
+	//DEBUG
+	void Update(){
+		if(Input.GetKeyDown("0"))
+			SpawnPlayerUnits();
+	}
+
 
 	//Adds Units to players
 	public void SpawnPlayerUnits(){
-		//this method does nothing right now...
-		var chooser = _Player1.GetComponent<ActiveChooser>();
+		foreach(GameObject player in _players){
+			ChildrenList list = player.GetComponent<ChildrenList>();
+			if(list == null){
+				Debug.LogError("Player " + player + " has no ChildrenList!");
+				return;
+			}
+			foreach(GameObject unit in Units){
+				list.AddPrefabAsChild(unit);
+			}
+		}
 	}
 
 

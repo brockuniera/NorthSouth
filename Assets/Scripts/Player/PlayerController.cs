@@ -4,9 +4,8 @@ using System.Collections;
 //for List<T>
 using System.Collections.Generic;
 
-//probably make an abstract class or something
-//like an interface?
 [RequireComponent (typeof (PlayerInputHandler))]
+[RequireComponent (typeof (Chooser))]
 
 //children are controlled units
 public class PlayerController : MonoBehaviour {
@@ -14,8 +13,9 @@ public class PlayerController : MonoBehaviour {
 	//which player this is
 	private int playerNumber;
 
-	//GOs I control
-	private List<AbstractUnitController> units;
+	//Chooses the current unit
+	private Chooser _chooser;
+	//The unit to give input to
 	private AbstractUnitController currentUnit;
 
 	//input handler
@@ -38,26 +38,14 @@ public class PlayerController : MonoBehaviour {
 		input = GetComponent<PlayerInputHandler>();
 		input.SetPlayerKeyBindings(playerNumber);
 
-		//setup layers
-		// layer is based off name
+		//setup layers; layer is based off name
 		gameObject.layer = LayerMask.NameToLayer(name);
 
+		//
+		//Setup refs
+		//
 
-		//populate list of units, who are children
-		units = new List<AbstractUnitController>();
-		foreach(Transform child in transform){
-			var comp = child.GetComponent<AbstractUnitController>();
-			if(comp){
-				comp.SetPlayerNumber(playerNumber);
-				units.Add(comp);
-			}
-		}
-
-		//assign the first child to currentUnit
-		if(units.Count != 0)
-			currentUnit = units[0];
-		else
-			Debug.LogError("No children of player with AbstractUnitController script!");
+		_chooser = GetComponent<Chooser>();
 	}
 	
 	void Update(){
@@ -80,7 +68,7 @@ public class PlayerController : MonoBehaviour {
 		//change unit on b button
 		// also have a method to directly change to a unit, thank you
 		if(input.bButton){
-			ChangeControlledUnit();
+			currentUnit = _chooser.GetNextUnit();
 		}
 
 	}
@@ -90,7 +78,8 @@ public class PlayerController : MonoBehaviour {
 	// 1) We could enumerate thru children and tell them to run
 	void FixedUpdate(){
 		//pass input to unit
-		currentUnit.InputMessage(unitInput);
+		if(currentUnit != null)
+			currentUnit.InputMessage(unitInput);
 
 		//clear input
 		// for use with buffering
@@ -99,7 +88,5 @@ public class PlayerController : MonoBehaviour {
 		unitInput.a = PlayerInputHandler.ADefault;
 	}
 
-	private void ChangeControlledUnit(){
-		//TODO lol
-	}
 }
+
