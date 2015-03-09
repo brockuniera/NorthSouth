@@ -1,0 +1,53 @@
+using UnityEngine;
+using System.Collections;
+
+[RequireComponent (typeof (ChildrenList))]
+
+//Chooses who is or isn't active at any given point in time
+//Order is determined by order added, not this componenets problem
+public class Chooser : MonoBehaviour {
+
+	//
+	//Private data
+	//
+
+	//ref to ChildrenList
+	private ChildrenList _children;
+
+	//chosen unit's index
+	private int _index;
+
+
+	public void Reset(){
+		_index = 0;
+	}
+
+	//
+	//Unity callbacks
+	//
+
+	void Start(){
+		_children = GetComponent<ChildrenList>();
+		_index = 0;
+	}
+
+	//If user presses B, changes
+	public AbstractUnitController GetNextUnit(){
+		if(_children.GetCount() == 0)
+			return null;
+
+		AbstractUnitController toReturn = _children.At(_index).GetComponent<AbstractUnitController>();
+
+		//Increment
+		_index++;
+
+		//Implement circular list
+		if(_index == _children.GetCount()){
+			_index = 0;
+		}
+
+		return toReturn;
+	}
+
+}
+
