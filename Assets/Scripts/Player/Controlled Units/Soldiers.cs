@@ -122,9 +122,9 @@ public class Soldiers : AbstractUnitController{
 	private void Attack(){
 		//create bullet
 		foreach(SubSoldier ss in _controlledSubUnits){
-			Bullet go = Instantiate(Projectile, ss.transform.position,
+			Bullet bul = Instantiate(Projectile, ss.transform.position,
 					Quaternion.identity) as Bullet;
-			go.Initialize(playerNumber);
+			bul.Initialize(playerNumber);
 		}
 	}
 
