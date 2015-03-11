@@ -40,11 +40,6 @@ public class Soldiers : AbstractUnitController{
 
 	//Move and attack
 	void FixedUpdate(){
-		//we're iterating through and telling each to Act()
-		//instead of relying on unity's Update()
-		foreach(AbstractControlledUnit ss in _controlledSubUnits){
-			ss.Act();
-		}
 
 		//attacking has 3 distinct parts
 		//and it also stops movement
@@ -74,14 +69,12 @@ public class Soldiers : AbstractUnitController{
 			input.y = 0;
 		}
 
-		//give input to sub units
-		foreach(Component co in _controlledSubUnits){
-			AbstractControlledUnit acu;
-			if(acu = co as AbstractControlledUnit)
+		//iterate over units to give input and move them
+		foreach(AbstractControlledUnit acu in _controlledSubUnits){
 				acu.InputMessage(input);
-			else
-				Debug.LogError("ChildrenList contains weird things!");
+				acu.Act();
 		}
+
 		
 	}
 
@@ -89,11 +82,8 @@ public class Soldiers : AbstractUnitController{
 	//tell SubSoldier to shoot
 	private void Attack(){
 		foreach(Component co in _controlledSubUnits){
-			AbstractControlledUnit acu;
-			if(acu = co as AbstractControlledUnit)
-				acu.Attack();
-			else
-				Debug.LogError("ChildrenList contains weird things!");
+			AbstractControlledUnit acu = (AbstractControlledUnit)co;
+			acu.Attack(); //if we get a NullReferenceException, we messed up somewhere: it should be unrecoverable
 		}
 	}
 

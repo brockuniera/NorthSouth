@@ -14,7 +14,6 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 
 	//Components I control
 	private List<Component> _children;
-	private Type _typeToUse;
 
 	//
 	//Unity callbacks
@@ -28,16 +27,6 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 
 	//
 	//Public methods
-	//
-
-	//Type Mutators
-	//
-
-	public void SetType(Type t){
-		_typeToUse = t;
-	}
-
-	//List Mutators
 	//
 
 	public Component At(int index){
@@ -64,14 +53,14 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 
 	//TODO Layers?
 	//Uses a prefab and Instantiates it itself
-	public void CreatePrefabAsChild(GameObject prefab, Vector3 position, Quaternion rotation){
-		GameObject child = Instantiate(prefab, position, rotation) as GameObject;
-		_children.Add(child.GetComponent(_typeToUse.GetType()));
+	public void CreatePrefabAsChild(Component prefab, Vector3 position, Quaternion rotation){
+		Component child = (Component)Instantiate(prefab, position, rotation);
+		_children.Add(child);
 		//child.transform.parent = transform;
 	}
 
-	public void CreatePrefabAsChild(GameObject go){
-		CreatePrefabAsChild(go, Vector3.zero, Quaternion.identity);
+	public void CreatePrefabAsChild(Component  prefab){
+		CreatePrefabAsChild(prefab, Vector3.zero, Quaternion.identity);
 	}
 
 	//Add a child yourself!
@@ -83,15 +72,12 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 
 	//Creates children with positions specified in []position
 	//and adds them to the list
-	public void CreateChildren(GameObject prefab, Vector2 []positions){
+	public void CreateChildren(Component prefab, Vector2 []positions){
 		var rot = transform.rotation;
-		//Transform par = transform;
 
 		//Create children in position, add to list
 		foreach(Vector3 p in positions){ //Implicit conversion from Vector2 to Vector3
-			GameObject go = Instantiate(prefab, p, rot) as GameObject;
-			//go.transform.parent = par;
-			_children.Add(go.GetComponent(_typeToUse.GetType()));
+			CreatePrefabAsChild(prefab, p, rot);
 		}
 	}
 
