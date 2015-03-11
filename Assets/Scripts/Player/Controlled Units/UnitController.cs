@@ -2,7 +2,7 @@
 using System.Collections;
 
 //Abstract base class for all UnitControllers, like soldier, horses, etc
-public abstract class AbstractUnitController : MonoBehaviour{
+public abstract class UnitController : MonoBehaviour{
 
 	//Inputs
 	//Make this a component? //XXX
