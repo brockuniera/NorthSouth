@@ -1,22 +1,7 @@
 using UnityEngine;
-using System.Collections;
-
 
 //'Soldiers' type of unit
-//create function to pass functions/actions to all children?
 public class Soldiers : AbstractUnitController{
-
-	//
-	//Movement
-	//
-
-	//'Rook' move speed
-	public float MoveSpeed = 10f;
-	//'Bishop' move speed, derived from MoveSpeed
-	private float _diagSpeedComponent;
-
-	//cached rigidbody
-	private Rigidbody2D _rb2d;
 
 
 	//
@@ -25,6 +10,8 @@ public class Soldiers : AbstractUnitController{
 
 	//literally just 1 state
 	private bool _attacking = false;
+	//frame counter for animation timing in FixedUpdate
+	private int _frame = 0;
 
 	//For attack animation lead up and cool down
 	// These happen in consecutive order
@@ -34,40 +21,29 @@ public class Soldiers : AbstractUnitController{
 	public int PreAttackFrame = 10;
 	public int AttackShootFrame = 10;
 
-	//frame counter for animation timing in FixedUpdate
-	private int _frame = 0;
-
 
 	//
-	//Bullets
+	//Initial child goal positions
 	//
-	
-	//Bullet prefab to use for shooting
-	public Bullet Projectile;
-	
+
+	public Vector2 []GoalPositions;
+
 
 	//
 	//Unity Callbacks
 	//
 
-
 	void Start(){
-		//Moving diagonally
-		_diagSpeedComponent = MoveSpeed / Mathf.Sqrt(2);
-		//caching :^)
-		_rb2d = rigidbody2D;
-
-		//Debugging to figure out who I belong to
-		Debug.Log(playerNumber);
+		//When a soldiers is created, it spawns units too
+		_controlledSubUnits.CreateChildren(ChildUnit, GoalPositions);
 	}
 
 	//Move and attack
 	void FixedUpdate(){
-		//we're iterating through and telling each to act()
-		//instead of relying on unity's update()
-		foreach(SubSoldier ss in _controlledSubUnits){
+		//we're iterating through and telling each to Act()
+		//instead of relying on unity's Update()
+		foreach(AbstractControlledUnit ss in _controlledSubUnits){
 			ss.Act();
-			ss.GetAnimator().SetBool("IsMoving", _rb2d.velocity != Vector2.zero);
 		}
 
 		//attacking has 3 distinct parts
@@ -92,39 +68,32 @@ public class Soldiers : AbstractUnitController{
 		//if attack, change state, stop moving
 		if(input.a){
 			_attacking = true;
-			_rb2d.velocity = Vector2.zero;
 			_frame = 0;
-			return;
+			//Don't give sub units movement input
+			input.x = 0;
+			input.y = 0;
 		}
 
-
-		//
-		//Movement
-		//
-
-		//Directions!
-		//   +y  
-		//    |
-		//-x -0- +x
-		//    |
-		//   -y  
-		
-		//if both inputs, use _diagSpeedComponent
-		float speed = input.x != 0 && input.y != 0 ? _diagSpeedComponent : MoveSpeed;
-
-		//change velocity
-		_rb2d.velocity = new Vector2(input.x, input.y) * speed;
+		//give input to sub units
+		foreach(Component co in _controlledSubUnits){
+			AbstractControlledUnit acu;
+			if(acu = co as AbstractControlledUnit)
+				acu.InputMessage(input);
+			else
+				Debug.LogError("ChildrenList contains weird things!");
+		}
 		
 	}
 
 	
 	//tell SubSoldier to shoot
 	private void Attack(){
-		//create bullet
-		foreach(SubSoldier ss in _controlledSubUnits){
-			Bullet bul = Instantiate(Projectile, ss.transform.position,
-					Quaternion.identity) as Bullet;
-			bul.Initialize(playerNumber);
+		foreach(Component co in _controlledSubUnits){
+			AbstractControlledUnit acu;
+			if(acu = co as AbstractControlledUnit)
+				acu.Attack();
+			else
+				Debug.LogError("ChildrenList contains weird things!");
 		}
 	}
 

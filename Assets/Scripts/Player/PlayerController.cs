@@ -10,9 +10,6 @@ using System.Collections.Generic;
 //children are controlled units
 public class PlayerController : MonoBehaviour {
 
-	//which player this is
-	private int playerNumber;
-
 	//Chooses the current unit
 	private Chooser _chooser;
 	//The unit to give input to
@@ -25,27 +22,25 @@ public class PlayerController : MonoBehaviour {
 	private InputStruct unitInput;
 
 	void Awake(){
-		//get player number from name(probably a bad idea)
+		//
+		//Setup references
+
+		_chooser = GetComponent<Chooser>();
+		input = GetComponent<PlayerInputHandler>();
+
+		//get player number from name (probably a bad idea)
 		//split name by spaces and get the second string returned
 		string s = name.Split(' ')[1];
 		if(s != null)
-			playerNumber = System.Convert.ToInt32(s);
+			input.SetPlayerKeyBindings(System.Convert.ToInt32(s));
 		else{
 			Debug.LogError("This Player has a malformed name! : " + name );
 			Application.Quit(); // oh man ! :OOOO
 		}
 
-		input = GetComponent<PlayerInputHandler>();
-		input.SetPlayerKeyBindings(playerNumber);
-
-		//setup layers; layer is based off name
+		//
+		//Setup layers; layer is based off name
 		gameObject.layer = LayerMask.NameToLayer(name);
-
-		//
-		//Setup refs
-		//
-
-		_chooser = GetComponent<Chooser>();
 	}
 	
 	void Update(){
