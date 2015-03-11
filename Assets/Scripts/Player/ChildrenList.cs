@@ -1,26 +1,27 @@
 using UnityEngine;
 using System.Collections;
 
-//for List<T>
-using System.Collections.Generic;
+using System; //for Type
+using System.Collections.Generic;//for List<T>
 
 //List of children of this component
 //Can add children here to do cool things
-public class ChildrenList : MonoBehaviour {
+public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 
 	//
 	//Data
 	//
 
-	//GOs I'm the parent of/control
-	private List<GameObject> _children;
+	//Components I control
+	private List<Component> _children;
+	private Type _typeToUse;
 
 	//
 	//Unity callbacks
 	//
 
 	void Awake(){
-		_children = new List<GameObject>();
+		_children = new List<Component>();
 		_children.Capacity = 6;
 
 	}
@@ -29,7 +30,17 @@ public class ChildrenList : MonoBehaviour {
 	//Public methods
 	//
 
-	public GameObject At(int index){
+	//Type Mutators
+	//
+
+	public void SetType(Type t){
+		_typeToUse = t;
+	}
+
+	//List Mutators
+	//
+
+	public Component At(int index){
 		return _children[index];
 	}
 
@@ -40,52 +51,60 @@ public class ChildrenList : MonoBehaviour {
 	//Removes all children
 	// This probably needs to be recursive
 	public void ClearChildren(){
-		foreach(GameObject go in _children){
-			Destroy(go);
+		foreach(Component comp in _children){
+			Destroy(comp.gameObject);
 		}
 		_children.Clear();
 	}
 
-	//Remove someone from the list
-	public void RemoveFromList(Object obj){
-		GameObject go = obj as GameObject;
-		if(go != null)
-			_children.Remove(go);
-		else
-			Debug.LogError("Could not remove object from list.");
+	//Remove someone from the list without destroying them
+	public void RemoveFromList(Component comp){
+		_children.Remove(comp);
 	}
 
 	//TODO Layers?
 	//Uses a prefab and Instantiates it itself
-	public void AddPrefabAsChild(GameObject go, Vector3 position, Quaternion rotation){
-		GameObject child = Instantiate(go, position, rotation) as GameObject;
-		_children.Add(child);
-		child.transform.parent = transform;
+	public void CreatePrefabAsChild(GameObject prefab, Vector3 position, Quaternion rotation){
+		GameObject child = Instantiate(prefab, position, rotation) as GameObject;
+		_children.Add(child.GetComponent(_typeToUse.GetType()));
+		//child.transform.parent = transform;
 	}
 
-	public void AddPrefabAsChild(GameObject go){
-		AddPrefabAsChild(go, Vector3.zero, Quaternion.identity);
+	public void CreatePrefabAsChild(GameObject go){
+		CreatePrefabAsChild(go, Vector3.zero, Quaternion.identity);
 	}
 
 	//Add a child yourself!
-	public void AddChild(GameObject go){
-		_children.Add(go);
-		go.transform.parent = transform;
+	public void AddChild(Component comp){
+		_children.Add(comp);
+		//go.transform.parent = transform;
 	}
 
 
 	//Creates children with positions specified in []position
 	//and adds them to the list
-	public void CreateChildren(GameObject prefab, Vector3 []positions){
+	public void CreateChildren(GameObject prefab, Vector2 []positions){
 		var rot = transform.rotation;
-		Transform par = transform;
+		//Transform par = transform;
 
 		//Create children in position, add to list
-		foreach(Vector3 p in positions){
+		foreach(Vector3 p in positions){ //Implicit conversion from Vector2 to Vector3
 			GameObject go = Instantiate(prefab, p, rot) as GameObject;
-			go.transform.parent = par;
-			_children.Add(go);
+			//go.transform.parent = par;
+			_children.Add(go.GetComponent(_typeToUse.GetType()));
 		}
 	}
+
+	//
+	//Enumerator Things
+	//
 	
+	IEnumerator<Component> IEnumerable<Component>.GetEnumerator(){
+		return this._children.GetEnumerator();
+	}
+
+	IEnumerator IEnumerable.GetEnumerator(){
+		return this._children.GetEnumerator();
+	}
 }
+
