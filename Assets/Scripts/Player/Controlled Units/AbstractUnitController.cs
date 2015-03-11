@@ -21,7 +21,7 @@ public abstract class AbstractUnitController : MonoBehaviour{
 	//Prefabs
 	//
 	
-	public GameObject ChildUnit;
+	public AbstractControlledUnit ChildUnit;
 	
 
 
