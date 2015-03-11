@@ -12,7 +12,7 @@ public class PlayerSpawner : MonoBehaviour {
 	//
 	
 	//Units given to each player
-	public AbstractUnitController [][]Units;
+	public UnitController [][]Units;
 
 	//
 	//Private data
@@ -55,7 +55,7 @@ public class PlayerSpawner : MonoBehaviour {
 			}
 
 			//add units
-			foreach(AbstractUnitController unit in Units[i]){
+			foreach(UnitController unit in Units[i]){
 				list.CreatePrefabAsChild(unit);
 			}
 		}

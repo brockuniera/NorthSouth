@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour {
 	//Chooses the current unit
 	private Chooser _chooser;
 	//The unit to give input to
-	private AbstractUnitController currentUnit;
+	private UnitController currentUnit;
 
 	//input handler
 	private PlayerInputHandler input;

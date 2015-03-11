@@ -1,7 +1,7 @@
 using UnityEngine;
 
 //'Soldiers' type of unit
-public class Soldiers : AbstractUnitController{
+public class Soldiers : UnitController{
 
 
 	//

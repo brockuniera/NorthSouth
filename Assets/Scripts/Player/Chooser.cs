@@ -32,11 +32,11 @@ public class Chooser : MonoBehaviour {
 	}
 
 	//If user presses B, changes
-	public AbstractUnitController GetNextUnit(){
+	public UnitController GetNextUnit(){
 		if(_children.GetCount() == 0)
 			return null;
 
-		AbstractUnitController toReturn = _children.At(_index).GetComponent<AbstractUnitController>();
+		UnitController toReturn = _children.At(_index).GetComponent<UnitController>();
 
 		//Increment
 		_index++;
