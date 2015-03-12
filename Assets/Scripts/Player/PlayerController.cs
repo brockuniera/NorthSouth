@@ -12,14 +12,27 @@ public class PlayerController : MonoBehaviour {
 
 	//Chooses the current unit
 	private Chooser _chooser;
+
 	//The unit to give input to
-	private UnitController currentUnit;
+	private UnitController _currentUnit;
 
 	//input handler
 	private PlayerInputHandler input;
 
 	//input to be given to units
 	private InputStruct unitInput;
+
+	//
+	//Public methods
+	//
+	
+	public void InitializeUnitController(){
+		_currentUnit = _chooser.GetNextUnit();
+	}
+
+	//
+	//Unity Callbacks
+	//
 
 	void Awake(){
 		//
@@ -45,7 +58,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update(){
 		//
-		//Process input
+		//Process and buffer input
 		//
 
 		input.UpdateInput();
@@ -61,9 +74,10 @@ public class PlayerController : MonoBehaviour {
 			input.aButton : unitInput.a;
 
 		//change unit on b button
-		// also have a method to directly change to a unit, thank you
+		// TODO also have a method to directly change to a unit, thank you
 		if(input.bButton){
-			currentUnit = _chooser.GetNextUnit();
+			_currentUnit.InputMessage(new InputStruct()); //give null message
+			_currentUnit = _chooser.GetNextUnit();
 		}
 
 	}
@@ -73,8 +87,11 @@ public class PlayerController : MonoBehaviour {
 	// 1) We could enumerate thru children and tell them to run
 	void FixedUpdate(){
 		//pass input to unit
-		if(currentUnit != null)
-			currentUnit.InputMessage(unitInput);
+		if(_currentUnit != null){
+			_currentUnit.InputMessage(unitInput);
+		}else{
+			Debug.Log("Player Controller's Current Unit is Null");
+		}
 
 		//clear input
 		// for use with buffering

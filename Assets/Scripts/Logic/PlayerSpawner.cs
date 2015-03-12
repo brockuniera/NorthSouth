@@ -12,7 +12,9 @@ public class PlayerSpawner : MonoBehaviour {
 	//
 	
 	//Units given to each player
-	public UnitController [][]Units;
+	public UnitController []Player1Units;
+	public UnitController []Player2Units;
+	private UnitController [][]Units;
 
 	//
 	//Private data
@@ -33,6 +35,10 @@ public class PlayerSpawner : MonoBehaviour {
 			Debug.LogError("Couldn't find two Players in Hierchay");
 			Application.Quit();
 		}
+		//setup list
+		Units = new UnitController[2][];
+		Units[0] = Player1Units;
+		Units[1] = Player2Units;
 	}
 
 	//DEBUG
@@ -49,15 +55,14 @@ public class PlayerSpawner : MonoBehaviour {
 		for(int i = 0; i < NumberOfPlayers; i++){
 			//get list
 			ChildrenList list = _players[i].GetComponent<ChildrenList>();
-			if(list == null){
-				Debug.LogError("Player " + i + " has no ChildrenList!");
-				return;
-			}
 
 			//add units
 			foreach(UnitController unit in Units[i]){
 				list.CreatePrefabAsChild(unit);
 			}
+
+			PlayerController pc = _players[i].GetComponent<PlayerController>();	
+			pc.InitializeUnitController();
 		}
 	}
 
