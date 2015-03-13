@@ -55,8 +55,7 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 	//Uses a prefab and Instantiates it itself
 	public void CreatePrefabAsChild(Component prefab, Vector3 position, Quaternion rotation){
 		Component child = (Component)Instantiate(prefab, position, rotation);
-		_children.Add(child);
-		//child.transform.parent = transform;
+		AddChild(child);
 	}
 
 	public void CreatePrefabAsChild(Component  prefab){
@@ -66,7 +65,7 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 	//Add a child yourself!
 	public void AddChild(Component comp){
 		_children.Add(comp);
-		//go.transform.parent = transform;
+		comp.transform.parent = transform;
 	}
 
 

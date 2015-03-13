@@ -3,7 +3,7 @@ using System.Collections;
 
 //A single SubSoldier, the actual soldiers that move around on screen with the sprites
 //this probably should be abstracted
-public abstract class AbstractControlledUnit : MonoBehaviour {
+public abstract class ControlledUnit : MonoBehaviour {
 
 	//
 	//Inputs

@@ -1,0 +1,7 @@
+We have the following prefabs:
+Generic prefabs
+Player1 specific variant
+Player2 specific variant
+
+Example:
+Soldiers, Soldier 1, Soldier 2

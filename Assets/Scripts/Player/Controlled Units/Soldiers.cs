@@ -70,7 +70,7 @@ public class Soldiers : UnitController{
 		}
 
 		//iterate over units to give input and move them
-		foreach(AbstractControlledUnit acu in _controlledSubUnits){
+		foreach(ControlledUnit acu in _controlledSubUnits){
 				acu.InputMessage(input);
 				acu.Act();
 		}
@@ -82,7 +82,7 @@ public class Soldiers : UnitController{
 	//tell SubSoldier to shoot
 	private void Attack(){
 		foreach(Component co in _controlledSubUnits){
-			AbstractControlledUnit acu = (AbstractControlledUnit)co;
+			ControlledUnit acu = (ControlledUnit)co;
 			acu.Attack(); //if we get a NullReferenceException, we messed up somewhere: it should be unrecoverable
 		}
 	}

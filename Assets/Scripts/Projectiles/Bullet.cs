@@ -7,10 +7,10 @@ public class Bullet : MonoBehaviour {
 	public int Damage = 1;
 
 	//Velocity of bullet
-	public float Velocity = 50;
+	public float Velocity = 15;
 
 	//Life time in FixedUpdates
-	public int LifeTime = 50;
+	public int LifeTime = 20;
 
 
 	//
@@ -32,12 +32,11 @@ public class Bullet : MonoBehaviour {
 	}
 
 	//TODO
-	//we need to abstract the idea of subunit, or create a shootable interface
-	//so we don't have to rewrite this a bazilly times
-	void OnColliderEnter2D(Collider2D col){
-		SubSoldier ss;
-		if(ss = col.transform.GetComponent<SubSoldier>()){
-			ss.InflictDamage(Damage);
+	void OnTriggerEnter2D(Collider2D col){
+		print("Collision!");
+		ControlledUnit cu;
+		if(cu = col.transform.GetComponent<ControlledUnit>()){
+			cu.InflictDamage(Damage);
 		}
 		Die();
 	}

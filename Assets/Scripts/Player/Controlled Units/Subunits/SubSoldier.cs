@@ -3,7 +3,7 @@ using System.Collections;
 
 //TODO Make player specific prefabs for everything
 //A single SubSoldier, the actual soldiers that move around on screen with the sprites
-public class SubSoldier : AbstractControlledUnit {
+public class SubSoldier : ControlledUnit {
 
 	//'Rook' move speed
 	public float MoveSpeed = 10f;

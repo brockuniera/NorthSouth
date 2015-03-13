@@ -1,0 +1,10 @@
+Collision Matrix
+
+Bullets: Hitbox of Player
+SubUnits: Moveable of Player
+
+Everything collides with default
+Subunits do not collide with SubUnits of any player
+Bullets collide with everything that isn't their Player
+
+
