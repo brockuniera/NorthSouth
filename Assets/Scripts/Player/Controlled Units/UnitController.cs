@@ -24,6 +24,19 @@ public abstract class UnitController : MonoBehaviour{
 	public ControlledUnit ChildUnit;
 	
 
+	//
+	//Public methods
+	//
+
+	public void Die(){
+		//Remove self from list
+		Transform dad = transform.parent;
+		ChildrenList cl = dad.GetComponent<ChildrenList>();
+		cl.RemoveFromList(this);
+
+		//destroy instance
+		Destroy(gameObject);
+	}
 
 	//
 	//Unity Callbacks

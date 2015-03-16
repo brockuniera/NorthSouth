@@ -33,7 +33,7 @@ public class Chooser : MonoBehaviour {
 
 	//If user presses B, changes
 	public UnitController GetNextUnit(){
-		if(_children.GetCount() == 0)
+		if(_children.Count == 0)
 			return null;
 
 		UnitController toReturn = _children.At(_index).GetComponent<UnitController>();
@@ -42,7 +42,7 @@ public class Chooser : MonoBehaviour {
 		_index++;
 
 		//Implement circular list
-		if(_index == _children.GetCount()){
+		if(_index == _children.Count){
 			_index = 0;
 		}
 
