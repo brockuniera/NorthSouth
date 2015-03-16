@@ -31,9 +31,7 @@ public class Bullet : MonoBehaviour {
 		}
 	}
 
-	//TODO
 	void OnTriggerEnter2D(Collider2D col){
-		print("Collision!");
 		ControlledUnit cu;
 		if(cu = col.transform.GetComponent<ControlledUnit>()){
 			cu.InflictDamage(Damage);

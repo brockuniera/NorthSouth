@@ -15,7 +15,7 @@ public abstract class UnitController : MonoBehaviour{
 	//
 
 	//List of units
-	protected ChildrenList _controlledSubUnits;
+	protected ChildrenList controlledSubUnits;
 
 	//
 	//Prefabs
@@ -30,7 +30,7 @@ public abstract class UnitController : MonoBehaviour{
 	//
 
 	void Awake(){
-		_controlledSubUnits = GetComponent<ChildrenList>();
+		controlledSubUnits = GetComponent<ChildrenList>();
 	}
 
 }

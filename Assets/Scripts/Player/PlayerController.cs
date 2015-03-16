@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour {
 			input.SetPlayerKeyBindings(System.Convert.ToInt32(s));
 		else{
 			Debug.LogError("This Player has a malformed name! : " + name );
-			Application.Quit(); // oh man ! :OOOO
+			Application.Quit(); 
 		}
 
 		//
@@ -76,6 +76,7 @@ public class PlayerController : MonoBehaviour {
 		//change unit on b button
 		// TODO also have a method to directly change to a unit, thank you
 		if(input.bButton){
+			//XXX Is this OK to have in update?
 			_currentUnit.InputMessage(new InputStruct()); //give null message
 			_currentUnit = _chooser.GetNextUnit();
 		}
