@@ -33,8 +33,8 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 		return _children[index];
 	}
 
-	public int GetCount(){
-		return _children.Count;
+	public int Count{
+		get{ return _children.Count; }
 	}
 
 	//Removes all children
@@ -51,6 +51,12 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 		_children.Remove(comp);
 	}
 
+	//Add a child yourself!
+	public void AddChild(Component comp){
+		_children.Add(comp);
+		comp.transform.parent = transform;
+	}
+
 	//TODO Layers?
 	//Uses a prefab and Instantiates it itself
 	public void CreatePrefabAsChild(Component prefab, Vector3 position, Quaternion rotation){
@@ -62,11 +68,6 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 		CreatePrefabAsChild(prefab, Vector3.zero, Quaternion.identity);
 	}
 
-	//Add a child yourself!
-	public void AddChild(Component comp){
-		_children.Add(comp);
-		comp.transform.parent = transform;
-	}
 
 
 	//Creates children with positions specified in []position
@@ -84,6 +85,10 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 	//Enumerator Things
 	//
 	
+	public Component this[int i]{
+		get { return _children[i]; }
+		set { _children[i] = value; }
+	}
 	IEnumerator<Component> IEnumerable<Component>.GetEnumerator(){
 		return this._children.GetEnumerator();
 	}

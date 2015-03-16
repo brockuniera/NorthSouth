@@ -20,20 +20,25 @@ public abstract class ControlledUnit : MonoBehaviour {
 	protected int health;
 
 	//
-	//Componenets
+	//Player num
 	//
 
-	//Animations
+	protected int playerNumber; 
+	//public void SetPlayerNumber(int pn){ playerNumber = pn; } //not needed as of now
+
+	//
+	//Component caching
+	//
+
 	protected Animator anim;
-	//rigidbody2d
 	protected Rigidbody2D rb2d;
 
 
-	// Use this for initialization
-	void Awake () {
+	void Awake(){
 		anim = GetComponent<Animator>();
 		rb2d = GetComponent<Rigidbody2D>();
 		health = InitialHealth;
+		playerNumber = LayerMask.LayerToName(gameObject.layer).Contains("1") ? 1 : 2;
 	}
 	
 	//Instead of FixedUpdate(), we'll use Act()
@@ -53,10 +58,17 @@ public abstract class ControlledUnit : MonoBehaviour {
 	}
 
 	//kill this object
-	void Die(){
-		//1) Remove self from parent's list
-		transform.parent.GetComponent<ChildrenList>().RemoveFromList(this);
-		//2) death
+	protected void Die(){
+		//remove self from list
+		Transform dad = transform.parent;
+		ChildrenList cl = dad.GetComponent<ChildrenList>();
+		cl.RemoveFromList(this);
+
+		//if that list becomes empty, destroy our owner
+		if(cl.Count == 0)
+			dad.GetComponent<UnitController>().Die();
+
+		//destroy instance
 		Destroy(gameObject);
 	}
 }

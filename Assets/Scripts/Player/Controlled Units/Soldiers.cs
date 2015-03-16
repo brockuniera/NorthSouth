@@ -27,22 +27,17 @@ public class Soldiers : UnitController{
 	//Initial child goal positions
 	//
 
-	//XXX What are these relative to?
-	// Solutions
-	//  Always relative to 0j
-	public Vector2 []GoalPositions;
+	public Vector2 []GoalPositionsHorizontal;
 	//P1
 	//2 1 0
 	//5 4 3
-
-
-	private void UpdateGoalPositions(){
-		int i = 0;
-		foreach(SubSoldier ss in controlledSubUnits){
-			ss.GoalPosition = GoalPositions[i++];
-		}
-	}
-
+	public Vector2 []GoalPositionsVertical;
+	//P1
+	//5 0
+	//3 1
+	//4 2
+	//Reference to which of the above formations to use
+	private Vector2 []currentFormation;
 
 	//tell SubSoldier to shoot
 	private void Attack(){
@@ -55,14 +50,26 @@ public class Soldiers : UnitController{
 	//Unity Callbacks
 	//
 
+	//XXX TEST CODE
+	void Update(){
+		if(Input.GetKeyDown("9")){
+			//Component temp;
+			//temp = controlledSubUnits[0];
+			//controlledSubUnits[0] = controlledSubUnits[3];
+			//controlledSubUnits[3] = temp;
+			currentFormation = currentFormation == GoalPositionsHorizontal ? GoalPositionsVertical : GoalPositionsHorizontal;
+		}
+	}
+	//XXX TEST CODE
+
 	void Start(){
 		//When this class is created, it spawns units too
-		controlledSubUnits.CreateChildren(ChildUnit, GoalPositions);
+		controlledSubUnits.CreateChildren(ChildUnit, GoalPositionsHorizontal);
+		currentFormation = GoalPositionsHorizontal;
 	}
 
 	//Move and attack
 	void FixedUpdate(){
-
 		//attacking has 3 distinct parts
 		//and it also stops movement
 		if(attacking){
@@ -92,9 +99,13 @@ public class Soldiers : UnitController{
 		}
 
 		//iterate over units to give input and move them
-		foreach(ControlledUnit cu in controlledSubUnits){
-				cu.InputMessage(input);
-				cu.Act();
+		Vector2 relativeTo = controlledSubUnits.At(0).rigidbody2D.position;
+		int i = 0;
+		foreach(SubSoldier ss in controlledSubUnits){
+			ss.InputMessage(input);
+			//TODO only update when relevant
+			ss.GoalPosition = currentFormation[i++] + relativeTo;
+			ss.Act();
 		}
 	}
 
