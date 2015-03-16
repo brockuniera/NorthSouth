@@ -57,7 +57,6 @@ public class Soldiers : UnitController{
 			//temp = controlledSubUnits[0];
 			//controlledSubUnits[0] = controlledSubUnits[3];
 			//controlledSubUnits[3] = temp;
-			currentFormation = currentFormation == GoalPositionsHorizontal ? GoalPositionsVertical : GoalPositionsHorizontal;
 		}
 	}
 	//XXX TEST CODE
@@ -96,6 +95,11 @@ public class Soldiers : UnitController{
 			//Don't give sub units movement input
 			input.x = 0;
 			input.y = 0;
+		}
+		//Pressing back changes formation
+		//TODO make player specific
+		if(input.x == -1 && lastinput.x != -1){
+			currentFormation = currentFormation == GoalPositionsHorizontal ? GoalPositionsVertical : GoalPositionsHorizontal;
 		}
 
 		//iterate over units to give input and move them

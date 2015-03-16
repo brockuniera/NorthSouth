@@ -47,8 +47,9 @@ public class SubSoldier : ControlledUnit {
 		//if both inputs, use diagSpeedComponent
 		float speed = input.x != 0 && input.y != 0 ? diagSpeedComponent : MoveSpeed;
 
-		//attempt to move to goal position
-		//TODO only catchup if we're too far away
+		//Attempt to move to goal position
+		//
+
 		//Old method:
 		//Vector2 catchup = Vector2.MoveTowards(rb2d.position, GoalPosition, CatchupSpeed) - rb2d.position;
 		Vector2 catchup = Vector2.zero;
