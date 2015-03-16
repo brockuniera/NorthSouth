@@ -5,10 +5,9 @@ using System.Collections;
 public abstract class UnitController : MonoBehaviour{
 
 	//Inputs
-	//Make this a component? //XXX
-	//that would literally get rid of this class :)
+	protected InputStruct lastinput;
 	protected InputStruct input;
-	public void InputMessage(InputStruct i){ input = i; }
+	public void InputMessage(InputStruct i){ lastinput = input; input = i; }
 
 	//
 	//Prefabs
