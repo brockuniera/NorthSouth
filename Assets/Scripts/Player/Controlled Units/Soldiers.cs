@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 //'Soldiers' type of unit
 public class Soldiers : UnitController{
@@ -9,9 +10,9 @@ public class Soldiers : UnitController{
 	//
 
 	//literally just 1 state
-	private bool _attacking = false;
+	private bool attacking = false;
 	//frame counter for animation timing in FixedUpdate
-	private int _frame = 0;
+	private int frame = 0;
 
 	//For attack animation lead up and cool down
 	// These happen in consecutive order
@@ -26,16 +27,37 @@ public class Soldiers : UnitController{
 	//Initial child goal positions
 	//
 
+	//XXX What are these relative to?
+	// Solutions
+	//  Always relative to 0j
 	public Vector2 []GoalPositions;
+	//P1
+	//2 1 0
+	//5 4 3
 
+
+	private void UpdateGoalPositions(){
+		int i = 0;
+		foreach(SubSoldier ss in controlledSubUnits){
+			ss.GoalPosition = GoalPositions[i++];
+		}
+	}
+
+
+	//tell SubSoldier to shoot
+	private void Attack(){
+		foreach(ControlledUnit cu in controlledSubUnits){
+			cu.Attack(); 
+		}
+	}
 
 	//
 	//Unity Callbacks
 	//
 
 	void Start(){
-		//When a soldiers is created, it spawns units too
-		_controlledSubUnits.CreateChildren(ChildUnit, GoalPositions);
+		//When this class is created, it spawns units too
+		controlledSubUnits.CreateChildren(ChildUnit, GoalPositions);
 	}
 
 	//Move and attack
@@ -43,17 +65,17 @@ public class Soldiers : UnitController{
 
 		//attacking has 3 distinct parts
 		//and it also stops movement
-		if(_attacking){
-			_frame++;
+		if(attacking){
+			frame++;
 
-			if(_frame == 1){
-				print("Getting ready...");
-			}else if(_frame == PreAttackFrame){
-				print("...Fire!...");
+			if(frame == 1){
+				//print("Getting ready...");
+			}else if(frame == PreAttackFrame){
+				//print("...Fire!...");
 				Attack();
-			}else if(_frame == PreAttackFrame + AttackShootFrame){ 
-				print("...Done");
-				_attacking = false;
+			}else if(frame == PreAttackFrame + AttackShootFrame){ 
+				//print("...Done");
+				attacking = false;
 			}
 
 			//We don't want to process movement if we're attacking
@@ -62,28 +84,17 @@ public class Soldiers : UnitController{
 
 		//if attack, change state, stop moving
 		if(input.a){
-			_attacking = true;
-			_frame = 0;
+			attacking = true;
+			frame = 0;
 			//Don't give sub units movement input
 			input.x = 0;
 			input.y = 0;
 		}
 
 		//iterate over units to give input and move them
-		foreach(ControlledUnit acu in _controlledSubUnits){
-				acu.InputMessage(input);
-				acu.Act();
-		}
-
-		
-	}
-
-	
-	//tell SubSoldier to shoot
-	private void Attack(){
-		foreach(Component co in _controlledSubUnits){
-			ControlledUnit acu = (ControlledUnit)co;
-			acu.Attack(); //if we get a NullReferenceException, we messed up somewhere: it should be unrecoverable
+		foreach(ControlledUnit cu in controlledSubUnits){
+				cu.InputMessage(input);
+				cu.Act();
 		}
 	}
 

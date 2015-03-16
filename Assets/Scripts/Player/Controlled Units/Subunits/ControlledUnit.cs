@@ -17,19 +17,23 @@ public abstract class ControlledUnit : MonoBehaviour {
 	//
 
 	public int InitialHealth = 1;
-	protected int _health;
+	protected int health;
+
+	//
+	//Componenets
+	//
 
 	//Animations
-	protected Animator _anim;
+	protected Animator anim;
 	//rigidbody2d
-	protected Rigidbody2D _rb2d;
+	protected Rigidbody2D rb2d;
 
 
 	// Use this for initialization
 	void Awake () {
-		_anim = GetComponent<Animator>();
-		_rb2d = GetComponent<Rigidbody2D>();
-		_health = InitialHealth;
+		anim = GetComponent<Animator>();
+		rb2d = GetComponent<Rigidbody2D>();
+		health = InitialHealth;
 	}
 	
 	//Instead of FixedUpdate(), we'll use Act()
@@ -40,8 +44,8 @@ public abstract class ControlledUnit : MonoBehaviour {
 
 	//returns true if this dies
 	public bool InflictDamage(int dmg){
-		_health -= dmg;
-		if(_health <= 0){
+		health -= dmg;
+		if(health <= 0){
 			Die();
 			return true;
 		}
