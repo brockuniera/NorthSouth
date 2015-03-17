@@ -11,15 +11,20 @@ public class SubSoldier : ControlledUnit {
 	//Input speeds
 	//
 	//'Rook' move speed
-	public float MoveSpeed = 10f;
+	public float MoveSpeed;
 	//'Bishop' move speed, derived from MoveSpeed
 	private float diagSpeedComponent;
 
-	//'Catchup' speeds, used to move to GoalPosition
+	//'Catchup' variables, used to move to GoalPosition
 	//
-	public float CatchupSpeed = 10f;
-	public float CatchupMinDist = 1f;
-
+	//Speed SubSoldier moves at to catchup
+	public float CatchupSpeed;
+	//Minimum distance to try catching up
+	public float CatchupMinDist;
+	//Random[0,1] is multiplied by this and added to CatchupMinDist
+	public float RandomMinDistFactor;
+	//TODO above will probably cause jittering
+	// until unit moves past CatchupMinDist
 
 	//Goal Position
 	// this unit attempts to move to its goal position at all times
@@ -39,36 +44,35 @@ public class SubSoldier : ControlledUnit {
 		diagSpeedComponent = MoveSpeed / Mathf.Sqrt(2);
 	}
 
+	void Update(){
+		anim.SetBool("IsMoving", rb2d.velocity != Vector2.zero);
+	}
+
 	public override void Act(){
 		//
 		//Movement
 		//
 
-		//if both inputs, use diagSpeedComponent
-		float speed = input.x != 0 && input.y != 0 ? diagSpeedComponent : MoveSpeed;
 
-		//Attempt to move to goal position
-		//
-
-		//Old method:
-		//Vector2 catchup = Vector2.MoveTowards(rb2d.position, GoalPosition, CatchupSpeed) - rb2d.position;
-		Vector2 catchup = Vector2.zero;
+		//Catchup has a minimum distance required to start trying to catchup
 		Vector2 dist = GoalPosition - rb2d.position;
-		if(dist.sqrMagnitude > CatchupMinDist){
-			catchup = dist;
+		if(dist.sqrMagnitude > (CatchupMinDist + RandomMinDistFactor * Random.value)){
+			//I'm too far; I'll catchup to the unit!
+			Vector2 catchup = dist;
 			catchup.Normalize();
 			catchup *= CatchupSpeed;
+			rb2d.velocity = catchup;
+		}else{
+			//I'm within range; I'll move with the unit!
+			//if both inputs, use diagSpeedComponent
+			float speed = input.x != 0 && input.y != 0 ? diagSpeedComponent : MoveSpeed;
+			rb2d.velocity = new Vector2(input.x, input.y) * speed;
 		}
 
 		//DEBUG
-		//if(playerNumber == 1 && this == transform.parent.GetComponent<ChildrenList>().At(1)){
+		//if(playerNumber == 1 && this == transform.parent.GetComponent<ChildrenList>().At(1))
 			//Debug.Log("Current: " + rb2d.position + " Goal: " + GoalPosition + " catchup: " + catchup);
-		//}
 
-		//change velocity
-		rb2d.velocity = new Vector2(input.x, input.y) * speed + catchup;
-
-		anim.SetBool("IsMoving", rb2d.velocity != Vector2.zero);
 	}
 
 	//Spawn bullets

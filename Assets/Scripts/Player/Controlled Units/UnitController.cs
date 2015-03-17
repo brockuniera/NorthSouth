@@ -5,9 +5,19 @@ using System.Collections;
 public abstract class UnitController : MonoBehaviour{
 
 	//Inputs
+	//
 	protected InputStruct lastinput;
 	protected InputStruct input;
 	public void InputMessage(InputStruct i){ lastinput = input; input = i; }
+
+	//PlayerSpecific
+	//
+	//Player this belongs to
+	protected int playerNumber;
+	//The direction the player presses to input 'back'
+	// P1: -1
+	// P2:  1
+	protected sbyte backdir; 
 
 	//
 	//Prefabs
@@ -15,13 +25,17 @@ public abstract class UnitController : MonoBehaviour{
 
 	//List of units
 	protected ChildrenList controlledSubUnits;
-
-	//
-	//Prefabs
-	//
-	
 	public ControlledUnit ChildUnit;
 	
+	//
+	//Unity Callbacks
+	//
+
+	void Awake(){
+		controlledSubUnits = GetComponent<ChildrenList>();
+		playerNumber = LayerMask.LayerToName(gameObject.layer).Contains("1") ? 1 : 2;
+		backdir = playerNumber == 1 ? (sbyte)-1 : (sbyte)1;
+	}
 
 	//
 	//Public methods
@@ -35,14 +49,6 @@ public abstract class UnitController : MonoBehaviour{
 
 		//destroy instance
 		Destroy(gameObject);
-	}
-
-	//
-	//Unity Callbacks
-	//
-
-	void Awake(){
-		controlledSubUnits = GetComponent<ChildrenList>();
 	}
 
 }
