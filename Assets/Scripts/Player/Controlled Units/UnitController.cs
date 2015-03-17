@@ -17,14 +17,20 @@ public abstract class UnitController : MonoBehaviour{
 	//The direction the player presses to input 'back'
 	// P1: -1
 	// P2:  1
-	protected sbyte backdir; 
+	protected sbyte backdir{ get; private set; }
 
 	//
-	//Prefabs
+	//Component caching
 	//
-
+	
 	//List of units
 	protected ChildrenList controlledSubUnits;
+
+	//
+	//Prefab
+	//
+
+	//Child to spawn copies of
 	public ControlledUnit ChildUnit;
 	
 	//

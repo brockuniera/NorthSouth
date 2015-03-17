@@ -44,7 +44,6 @@ public class PlayerSpawner : MonoBehaviour {
 	//DEBUG
 	void Update(){
 		if(Input.GetKeyDown("0")){
-			Debug.Log("Spawning units for each Player");
 			SpawnPlayerUnits();
 		}
 	}

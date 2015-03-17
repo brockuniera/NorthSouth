@@ -17,6 +17,10 @@ public class SubSoldier : ControlledUnit {
 
 	//'Catchup' variables, used to move to GoalPosition
 	//
+	//Should we being trying to catchup?
+	private bool isCatchingUp = false;
+	//How far until we are caught up?
+	private float minDist;
 	//Speed SubSoldier moves at to catchup
 	public float CatchupSpeed;
 	//Minimum distance to try catching up
@@ -26,11 +30,10 @@ public class SubSoldier : ControlledUnit {
 	//TODO above will probably cause jittering
 	// until unit moves past CatchupMinDist
 
+
 	//Goal Position
-	// this unit attempts to move to its goal position at all times
-	//We could weigh the need to move to GoalPosition
-	//vs the movement vector given by just the input
-	public Vector2 GoalPosition;
+	// this unit attempts to move to its goal position
+	public Vector2 GoalPosition { get; set; }
 
 	//
 	//Prefabs
@@ -38,6 +41,10 @@ public class SubSoldier : ControlledUnit {
 
 	//Bullet prefab to use for shooting
 	public Bullet Projectile;
+
+	//
+	//Callbacks
+	//
 
 	void Start(){
 		//Moving diagonally
@@ -48,21 +55,43 @@ public class SubSoldier : ControlledUnit {
 		anim.SetBool("IsMoving", rb2d.velocity != Vector2.zero);
 	}
 
+	//
+	//Catchup methods
+	//
+
+	public void StartCatchingUp(){
+		isCatchingUp = true;
+		//Calculate how close to get before stopping
+		minDist = CatchupMinDist + RandomMinDistFactor * Random.value;
+	}
+
+	//
+	//Overrides
+	//
+
 	public override void Act(){
 		//
 		//Movement
 		//
 
+		//TODO Only catchup when:
+		// shooting
+		// changing formation
 
-		//Catchup has a minimum distance required to start trying to catchup
-		Vector2 dist = GoalPosition - rb2d.position;
-		if(dist.sqrMagnitude > (CatchupMinDist + RandomMinDistFactor * Random.value)){
-			//I'm too far; I'll catchup to the unit!
-			Vector2 catchup = dist;
-			catchup.Normalize();
-			catchup *= CatchupSpeed;
-			rb2d.velocity = catchup;
-		}else{
+		if(isCatchingUp){
+			Vector2 dist = GoalPosition - rb2d.position;
+			if(dist.sqrMagnitude > minDist){
+				//I'm too far; I'll catchup to the unit!
+				Vector2 catchup = dist;
+				catchup.Normalize();
+				catchup *= CatchupSpeed;
+				rb2d.velocity = catchup;
+			}else{
+				//I caught up!
+				isCatchingUp = false;
+			}
+		}
+		if(!isCatchingUp){
 			//I'm within range; I'll move with the unit!
 			//if both inputs, use diagSpeedComponent
 			float speed = input.x != 0 && input.y != 0 ? diagSpeedComponent : MoveSpeed;
@@ -71,18 +100,19 @@ public class SubSoldier : ControlledUnit {
 
 		//DEBUG
 		//if(playerNumber == 1 && this == transform.parent.GetComponent<ChildrenList>().At(1))
-			//Debug.Log("Current: " + rb2d.position + " Goal: " + GoalPosition + " catchup: " + catchup);
+		//Debug.Log("Current: " + rb2d.position + " Goal: " + GoalPosition + " catchup: " + catchup);
 
 	}
 
 	//Spawn bullets
 	public override void Attack(){
+		rb2d.velocity = Vector2.zero;
 		Instantiate(Projectile, rb2d.position, Quaternion.identity);
 	}
 
-	//Oncollsion, we could swap leaders?
+	//TODO Oncollsion, we could swap leaders?
 	void OnCollisionEnter2D(){
-		print("Test");
+		//print("Test");
 	}
 
 }

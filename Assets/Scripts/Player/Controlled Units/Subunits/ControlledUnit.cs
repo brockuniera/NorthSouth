@@ -32,6 +32,9 @@ public abstract class ControlledUnit : MonoBehaviour {
 	protected Animator anim;
 	protected Rigidbody2D rb2d;
 
+	//
+	//Setup
+	//
 
 	void Awake(){
 		anim = GetComponent<Animator>();
@@ -39,12 +42,20 @@ public abstract class ControlledUnit : MonoBehaviour {
 		health = InitialHealth;
 		playerNumber = LayerMask.LayerToName(gameObject.layer).Contains("1") ? 1 : 2;
 	}
+
+	//
+	//Abstract methods
+	//
 	
 	//Instead of FixedUpdate(), we'll use Act()
 	//that the controller will call
 	public abstract void Act();
 	public abstract void Attack();
 
+
+	//
+	//Unit specific things
+	//
 
 	//returns true if this dies
 	public bool InflictDamage(int dmg){

@@ -77,6 +77,9 @@ public class Soldiers : UnitController{
 
 			if(frame == 1){
 				//print("Getting ready...");
+				foreach(SubSoldier ss in controlledSubUnits){
+					ss.StartCatchingUp();
+				}
 			}else if(frame == PreAttackFrame){
 				//print("...Fire!...");
 				Attack();
@@ -104,9 +107,12 @@ public class Soldiers : UnitController{
 
 
 		//Pressing back changes formation
-		//TODO make player specific
-		if(input.x == -1 && lastinput.x != -1){
+		if(input.x == backdir && lastinput.x != backdir){
 			currentFormation = currentFormation == GoalPositionsHorizontal ? GoalPositionsVertical : GoalPositionsHorizontal;
+			foreach(SubSoldier ss in controlledSubUnits){
+				ss.StartCatchingUp();
+			}
+
 		}
 
 
@@ -115,7 +121,7 @@ public class Soldiers : UnitController{
 		int i = 0;
 		foreach(SubSoldier ss in controlledSubUnits){
 			ss.InputMessage(input);
-			//TODO only update when relevant
+			//TODO only update when relevant?
 			ss.GoalPosition = currentFormation[i++] + relativeTo;
 			ss.Act();
 		}
