@@ -17,9 +17,6 @@ public class Soldiers : UnitController{
 
 	//For attack animation lead up and cool down
 	// These happen in consecutive order
-	// ie the whole animation stops at PostAttackFrame
-	//
-	//I define 'frame' to be 1 call to FixedUpdate()
 	public int PreAttackFrame = 10;
 	public int AttackShootFrame = 10;
 
@@ -45,6 +42,14 @@ public class Soldiers : UnitController{
 		foreach(ControlledUnit cu in controlledSubUnits){
 			cu.Attack(); 
 		}
+	}
+
+	//tell SubSoldiers to catchup
+	private void StartCatchingUp(bool precise = false){
+		foreach(SubSoldier ss in controlledSubUnits){
+			ss.StartCatchingUp(precise);
+		}
+
 	}
 
 	//
@@ -77,9 +82,7 @@ public class Soldiers : UnitController{
 
 			if(frame == 1){
 				//print("Getting ready...");
-				foreach(SubSoldier ss in controlledSubUnits){
-					ss.StartCatchingUp();
-				}
+				StartCatchingUp(true);
 			}else if(frame == PreAttackFrame){
 				//print("...Fire!...");
 				Attack();
@@ -109,9 +112,7 @@ public class Soldiers : UnitController{
 		//Pressing back changes formation
 		if(input.x == backdir && lastinput.x != backdir){
 			currentFormation = currentFormation == GoalPositionsHorizontal ? GoalPositionsVertical : GoalPositionsHorizontal;
-			foreach(SubSoldier ss in controlledSubUnits){
-				ss.StartCatchingUp();
-			}
+			StartCatchingUp(false);
 
 		}
 
