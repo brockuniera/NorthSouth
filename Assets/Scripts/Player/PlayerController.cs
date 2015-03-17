@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour {
 		if(_currentUnit != null){
 			_currentUnit.InputMessage(unitInput);
 		}else{
-			Debug.Log("Player Controller's Current Unit is Null");
+			//Debug.Log("Player Controller's Current Unit is Null");
 		}
 
 		//clear input

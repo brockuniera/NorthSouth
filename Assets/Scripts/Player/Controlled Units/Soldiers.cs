@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 //'Soldiers' type of unit
+//XXX THIS CLASS CANNOT HAVE AWAKE()
 public class Soldiers : UnitController{
 
 
@@ -84,7 +85,11 @@ public class Soldiers : UnitController{
 				attacking = false;
 			}
 
-			//We don't want to process movement if we're attacking
+			//let units act with null input
+			foreach(SubSoldier ss in controlledSubUnits){
+				ss.InputMessage(new InputStruct());
+				ss.Act();
+			}
 			return;
 		}
 
@@ -96,13 +101,16 @@ public class Soldiers : UnitController{
 			input.x = 0;
 			input.y = 0;
 		}
+
+
 		//Pressing back changes formation
 		//TODO make player specific
 		if(input.x == -1 && lastinput.x != -1){
 			currentFormation = currentFormation == GoalPositionsHorizontal ? GoalPositionsVertical : GoalPositionsHorizontal;
 		}
 
-		//iterate over units to give input and move them
+
+		//Iterate over units to give input and move them
 		Vector2 relativeTo = controlledSubUnits.At(0).rigidbody2D.position;
 		int i = 0;
 		foreach(SubSoldier ss in controlledSubUnits){

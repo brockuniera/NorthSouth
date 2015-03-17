@@ -13,18 +13,17 @@ public abstract class ControlledUnit : MonoBehaviour {
 	public void InputMessage(InputStruct i){ input = i; }
 
 	//
+	//Player num
+	//
+	protected int playerNumber; 
+
+	//
 	//Set HP
 	//
 
 	public int InitialHealth = 1;
 	protected int health;
 
-	//
-	//Player num
-	//
-
-	protected int playerNumber; 
-	//public void SetPlayerNumber(int pn){ playerNumber = pn; } //not needed as of now
 
 	//
 	//Component caching
@@ -64,7 +63,7 @@ public abstract class ControlledUnit : MonoBehaviour {
 		ChildrenList cl = dad.GetComponent<ChildrenList>();
 		cl.RemoveFromList(this);
 
-		//if that list becomes empty, destroy our owner
+		//if that list becomes empty, our commander should die
 		if(cl.Count == 0)
 			dad.GetComponent<UnitController>().Die();
 
