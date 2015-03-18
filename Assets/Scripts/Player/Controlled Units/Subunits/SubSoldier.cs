@@ -18,9 +18,9 @@ public class SubSoldier : ControlledUnit {
 	//Catchup Timer
 	//
 	//The timer
-	private int catchupFrame = 0;
-	//Frames until action
-	public int AutoCatchupFrames;
+	private Timer catchupTimer;
+	//Time until action
+	public float AutoCatchupTime;
 
 
 	//'Catchup' variables, used to move to GoalPosition
@@ -53,7 +53,7 @@ public class SubSoldier : ControlledUnit {
 	//Goal Position
 	// this unit attempts to move to its goal position
 	// modified by Soldiers class
-	public Vector2 GoalPosition { get; set; }
+	public Vector2 GoalPosition;
 
 	//
 	//Prefabs
@@ -69,6 +69,7 @@ public class SubSoldier : ControlledUnit {
 	void Start(){
 		//Moving diagonally
 		diagSpeedComponent = MoveSpeed / Mathf.Sqrt(2);
+		catchupTimer = new Timer();
 	}
 
 	void Update(){
@@ -107,14 +108,11 @@ public class SubSoldier : ControlledUnit {
 	//
 
 	public override void Act(){
-		//Timers
-		//
 
 		//Auto Catchup timer
 		if(!isCatchingUp){
-			if(++catchupFrame == AutoCatchupFrames){
-				catchupFrame = 0;
-				//Do a precise catchup
+			if(catchupTimer.isDone){
+				catchupTimer.SetTimer(AutoCatchupTime);
 				StartCatchingUp(true);
 			}
 		}
@@ -123,6 +121,7 @@ public class SubSoldier : ControlledUnit {
 		//
 
 		if(isCatchingUp){
+			catchupTimer.SetTimer(AutoCatchupTime);
 			Vector2 dist = GoalPosition - rb2d.position;
 			float distSqrMag = dist.sqrMagnitude;
 			if(distSqrMag > minDist){
@@ -159,9 +158,7 @@ public class SubSoldier : ControlledUnit {
 
 	//Spawn bullets
 	public override void Attack(){
-		//Stop moving
 		rb2d.velocity = Vector2.zero;
-		//Make bullets
 		Instantiate(Projectile, rb2d.position, Quaternion.identity);
 	}
 

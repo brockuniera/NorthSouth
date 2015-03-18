@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public class Timer{
+public struct Timer{
 
 	//The time to wait for
 	private float _goalTime;
 
 	//returns true if enough time passed
-	public bool IsDone {
+	public bool isDone {
 		get{ return Time.time >= _goalTime; }
 	}
 
