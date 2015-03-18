@@ -1,4 +1,6 @@
-New branch: use just one generic, recursive container class instead of abstract classes for every thing
+Make a timer class
+ Uses Unity's time, instead of counting fixed updates
+ Abstraction is easier :)
 
-BUGS:
-	Soldiers kill themselves when they shoot. This is probably because the layers are messed up.
+Minor tweak ups in Soldiers.cs and SubSoldier.cs
+Polish movement

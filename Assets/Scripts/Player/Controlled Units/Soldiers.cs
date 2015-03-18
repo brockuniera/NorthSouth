@@ -20,6 +20,17 @@ public class Soldiers : UnitController{
 	public int PreAttackFrame = 10;
 	public int AttackShootFrame = 10;
 
+	//
+	//Tap back to reform units
+	//
+
+	///<summary>
+	///Holding back for within this many frames counts as a tap and reforms the units
+	///<\summary>
+	public int MaxBackButtonReformFrames;
+	//The timer for above
+	private int backTimer;
+
 
 	//
 	//Initial child goal positions
@@ -75,6 +86,11 @@ public class Soldiers : UnitController{
 
 	//Move and attack
 	void FixedUpdate(){
+
+		//Increment timer for pressing back
+		if(input.x == backdir)
+			backTimer++;
+
 		//attacking has 3 distinct parts
 		//and it also stops movement
 		if(attacking){
@@ -91,7 +107,7 @@ public class Soldiers : UnitController{
 				attacking = false;
 			}
 
-			//let units act with null input
+			//let units act, but with null input
 			foreach(SubSoldier ss in controlledSubUnits){
 				ss.InputMessage(new InputStruct());
 				ss.Act();
@@ -99,30 +115,50 @@ public class Soldiers : UnitController{
 			return;
 		}
 
+
+		//
+		//Initial attacking
+
+		//Position of leader (ie, At(0)), so other units can
+		//be placed relative to him
+		//TODO Cache leader's rigidbody2D
+		Vector2 relativeTo = controlledSubUnits.At(0).rigidbody2D.position;
+
 		//if attack, change state, stop moving
 		if(input.a){
 			attacking = true;
 			frame = 0;
+			//Move units slightly forward/backward: P1/P2
+			//TODO random in any direction, make .1f or whatev a public var
+			if(input.x != backdir){
+				relativeTo.x -= .01f * playerNumber == 1 ? 1 : -1;
+			}
 			//Don't give sub units movement input
 			input.x = 0;
 			input.y = 0;
+		}else if(lastinput.x == backdir && input.x != backdir){
+			//Pressing back changes formation
+			//Only reform if pressing back was considered a tap
+			if(backTimer < MaxBackButtonReformFrames){
+				//Reform units
+				currentFormation = currentFormation == GoalPositionsHorizontal ? GoalPositionsVertical : GoalPositionsHorizontal;
+				StartCatchingUp(false);
+			}
+			//Reset timer whenver back is released
+			backTimer = 0;
 		}
 
 
-		//Pressing back changes formation
-		if(input.x == backdir && lastinput.x != backdir){
-			currentFormation = currentFormation == GoalPositionsHorizontal ? GoalPositionsVertical : GoalPositionsHorizontal;
-			StartCatchingUp(false);
-
-		}
-
+		//
+		//Final step; passing input
+		//
 
 		//Iterate over units to give input and move them
-		Vector2 relativeTo = controlledSubUnits.At(0).rigidbody2D.position;
 		int i = 0;
 		foreach(SubSoldier ss in controlledSubUnits){
 			ss.InputMessage(input);
-			//TODO only update when relevant?
+			//TODO only update when relevant:
+			// Only when there is input!!
 			ss.GoalPosition = currentFormation[i++] + relativeTo;
 			ss.Act();
 		}
