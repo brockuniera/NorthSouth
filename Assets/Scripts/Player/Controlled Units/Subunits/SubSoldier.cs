@@ -140,7 +140,6 @@ public class SubSoldier : ControlledUnit {
 					catchup *= CatchupSpeed;
 					rb2d.velocity = catchup;
 				}
-
 			}else{
 				//I caught up!
 				isCatchingUp = false;
