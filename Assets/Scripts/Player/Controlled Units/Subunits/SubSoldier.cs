@@ -63,7 +63,7 @@ public class SubSoldier : ControlledUnit {
 	public Bullet Projectile;
 
 	//
-	//Callbacks
+	//Unity Callbacks
 	//
 
 	void Start(){
@@ -110,6 +110,7 @@ public class SubSoldier : ControlledUnit {
 		//Timers
 		//
 
+		//Auto Catchup timer
 		if(!isCatchingUp){
 			if(++catchupFrame == AutoCatchupFrames){
 				catchupFrame = 0;
@@ -158,7 +159,9 @@ public class SubSoldier : ControlledUnit {
 
 	//Spawn bullets
 	public override void Attack(){
+		//Stop moving
 		rb2d.velocity = Vector2.zero;
+		//Make bullets
 		Instantiate(Projectile, rb2d.position, Quaternion.identity);
 	}
 
