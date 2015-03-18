@@ -33,20 +33,49 @@ public class Soldiers : UnitController{
 	private Timer backTimer;
 
 	//
-	//Initial child goal positions
+	//Child goal positions
 	//
 
-	public Vector2 []GoalPositionsHorizontal;
+	//TODO player specific
+	//TODO player specific
+	//TODO player specific
+	//TODO player specific
+
 	//P1
 	//2 1 0
 	//5 4 3
-	public Vector2 []GoalPositionsVertical;
+	private Vector2 []HorizontalFormation = {
+		new Vector2( 0,  0),
+		new Vector2(-2,  0),
+		new Vector2(-4,  0),
+		new Vector2( 0, -2),
+		new Vector2(-2, -2),
+		new Vector2(-4, -2)
+	};
+	//Slightly staggered version of HorizontalFormation
+	private Vector2 []StaggeredFormation = {
+		new Vector2( 0,  0.000f),
+		new Vector2(-2, -0.666f),
+		new Vector2(-4, -1.333f),
+		new Vector2( 0, -2.000f),
+		new Vector2(-2, -2.666f),
+		new Vector2(-4, -3.333f)
+	};
 	//P1
 	//5 0
 	//3 1
 	//4 2
+	private Vector2 []VerticalFormation = {
+		new Vector2( 0,  0),
+		new Vector2( 0,  -2),
+		new Vector2( 0,  -4),
+		new Vector2(-2, -3),
+		new Vector2(-2, -5),
+		new Vector2(-2,  -1)
+	};
 	//Reference to which of the above formations to use
 	private Vector2 []currentFormation;
+
 
 	//
 	//Macro methods
@@ -66,10 +95,22 @@ public class Soldiers : UnitController{
 		}
 	}
 
-	//Changes units formation, right now there are only two
+	//Changes units to staggered version if not already
+	private void StaggerFormation(){
+		currentFormation = currentFormation == VerticalFormation
+			? VerticalFormation : StaggeredFormation;
+	}
+
+	//Changes units to staggered version if not already
+	private void UnStaggerFormation(){
+		currentFormation = currentFormation == StaggeredFormation
+			? HorizontalFormation : currentFormation;
+	}
+
+	//Changes units formation
 	private void ChangeFormation(){
-		currentFormation = currentFormation == GoalPositionsHorizontal
-			? GoalPositionsVertical : GoalPositionsHorizontal;
+		currentFormation = currentFormation == VerticalFormation
+			? HorizontalFormation : VerticalFormation;
 	}
 
 	//
@@ -88,19 +129,15 @@ public class Soldiers : UnitController{
 
 	void Start(){
 		//When this class is created, it spawns units too
-		controlledSubUnits.CreateChildren(ChildUnit, GoalPositionsHorizontal);
+		controlledSubUnits.CreateChildren(ChildUnit, HorizontalFormation);
 		//set initial formation
-		currentFormation = GoalPositionsHorizontal;
+		currentFormation = HorizontalFormation;
 		attackTimer = new Timer();
 		backTimer = new Timer();
 	}
 
 	//Move and attack
 	void FixedUpdate(){
-
-		//If back is pressed, start timer for it
-		if(input.x == backdir && lastinput.x != backdir)
-			backTimer.SetTimer(MaxBackButtonReformTime);
 
 		//Attack state handling
 		switch(attacking){
@@ -112,7 +149,7 @@ public class Soldiers : UnitController{
 					ss.Act();
 				}
 
-				if(attackTimer.IsDone){
+				if(attackTimer.isDone){
 					Attack();
 
 					attackTimer.SetTimer(CooldownTime);
@@ -121,7 +158,7 @@ public class Soldiers : UnitController{
 				return;
 				//Just shot; can't input
 			case AttackState.Cooldown:
-				if(attackTimer.IsDone){
+				if(attackTimer.isDone){
 					attackTimer.SetTimer(MoveNoShootTime);
 					attacking = AttackState.MoveNoShoot;
 				}
@@ -130,7 +167,7 @@ public class Soldiers : UnitController{
 			case AttackState.MoveNoShoot:
 				input.a = false;
 
-				if(attackTimer.IsDone){
+				if(attackTimer.isDone){
 					attacking = AttackState.None;
 				}
 				break; //no return
@@ -140,38 +177,19 @@ public class Soldiers : UnitController{
 		//
 		//Process Input
 		//
+		
+		//Tapping back
+		//
 
-		//Position of leader (ie, At(0)), so other units can
-		//be placed relative to him
-		//TODO Cache leader's rigidbody2D
-		Vector2 relativeTo = controlledSubUnits.At(0).rigidbody2D.position;
+		//If back is pressed, start timer for it
+		if(input.x == backdir && lastinput.x != backdir)
+			backTimer.SetTimer(MaxBackButtonReformTime);
 
-		//if attack: move units slightly, change state, stop moving
-		if(input.a){
-			//Stagger units slightly
-			//TODO random in any direction, make .1f or whatev a public var
-			if(input.x != backdir){
-				relativeTo.x -= .01f * playerNumber == 1 ? 1 : -1;
-			}
-
-			StartCatchingUp(true);
-
-			//State setup
-			//
-
-			attacking = AttackState.Warmup;
-			attackTimer.SetTimer(WarmupTime);
-
-			//Don't give sub units movement input
-			input.x = 0;
-			input.y = 0;
-
-			//XXX For whatever reason, this is mutually exclusive?
-			// Its probably because of the input.x = 0 stuff
-		}else if(lastinput.x == backdir && input.x != backdir){
+		//If back is release, check if it was a tap
+		if(input.x != backdir && lastinput.x == backdir){
 			//Pressing back changes formation
 			//Only reform if pressing back was considered a tap
-			if(!backTimer.IsDone){
+			if(!backTimer.isDone){
 				ChangeFormation();
 				StartCatchingUp();
 			}
@@ -179,17 +197,46 @@ public class Soldiers : UnitController{
 			backTimer.SetTimer(MaxBackButtonReformTime);
 		}
 
+		//Position of leader (ie, At(0)), so other units can
+		//be placed relative to him
+		Vector2 relativeTo = controlledSubUnits.At(0).rigidbody2D.position;
+
+		//Attacking
+		//
+
+		if(input.a){
+			StaggerFormation();
+			int j = 0;
+			foreach(SubSoldier ss in controlledSubUnits)
+				ss.GoalPosition = currentFormation[j++] + relativeTo;
+			StartCatchingUp(true);
+
+			//State change
+			attacking = AttackState.Warmup;
+			attackTimer.SetTimer(WarmupTime);
+
+			//No movement input
+			input.x = 0;
+			input.y = 0;
+
+			foreach(SubSoldier ss in controlledSubUnits){
+				ss.InputMessage(input);
+				ss.Act();
+			}
+
+			return;
+		}
 
 		//
 		//Final step; passing input
 		//
 
+		UnStaggerFormation();
+
 		//Iterate over units to give input, goal pos, and move them
 		int i = 0;
 		foreach(SubSoldier ss in controlledSubUnits){
 			ss.InputMessage(input);
-			//TODO only update when relevant:
-			// Only when there is input!!
 			ss.GoalPosition = currentFormation[i++] + relativeTo;
 			ss.Act();
 		}
