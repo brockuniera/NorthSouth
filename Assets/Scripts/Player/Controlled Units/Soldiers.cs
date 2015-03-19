@@ -2,51 +2,79 @@ using UnityEngine;
 using System.Collections;
 
 //'Soldiers' type of unit
-//XXX THIS CLASS CANNOT HAVE AWAKE()
+//XXX THIS CLASS CANNOT HAVE awake()
 public class Soldiers : UnitController{
-
-
 	//
-	//Very basic FSM, for attacking
+	//Very basic FSM for attacking
 	//
 
-	//literally just 1 state
-	private bool attacking = false;
-	//frame counter for animation timing in FixedUpdate
-	private int frame = 0;
-
-	//For attack animation lead up and cool down
-	// These happen in consecutive order
-	public int PreAttackFrame = 10;
-	public int AttackShootFrame = 10;
+	//The states we can be in for attacking:
+	// None -- We are not attacking
+	// Warmup -- We can't move and will shoot soon
+	// -- Shooting happens here --
+	// Cooldown -- We just shot and still can't move
+	// MoveNoShoot -- We can move, but we can't shoot
+	private enum AttackState {None, Warmup, Cooldown, MoveNoShoot};
+	private AttackState attacking = AttackState.None;
+	//Timer for above states
+	private Timer attackTimer;
+	//Times for each of the above states
+	public float WarmupTime;
+	public float CooldownTime;
+	public float MoveNoShootTime;
 
 	//
 	//Tap back to reform units
 	//
 
-	///<summary>
-	///Holding back for within this many frames counts as a tap and reforms the units
-	///<\summary>
-	public int MaxBackButtonReformFrames;
+	//Holding back for within this much time counts as a 'tap' and reforms the units
+	public float MaxBackButtonReformTime;
 	//The timer for above
-	private int backTimer;
-
+	private Timer backTimer;
 
 	//
-	//Initial child goal positions
+	//Child goal positions
 	//
 
-	public Vector2 []GoalPositionsHorizontal;
 	//P1
 	//2 1 0
 	//5 4 3
-	public Vector2 []GoalPositionsVertical;
+	private Vector2 []HorizontalFormation = {
+		new Vector2( 0,  0),
+		new Vector2(-2,  0),
+		new Vector2(-4,  0),
+		new Vector2( 0, -2),
+		new Vector2(-2, -2),
+		new Vector2(-4, -2)
+	};
+	//Slightly staggered version of HorizontalFormation
+	private Vector2 []StaggeredFormation = {
+		new Vector2( 0,  0.000f),
+		new Vector2(-2, -0.666f),
+		new Vector2(-4, -1.333f),
+		new Vector2( 0, -2.000f),
+		new Vector2(-2, -2.666f),
+		new Vector2(-4, -3.333f)
+	};
 	//P1
 	//5 0
 	//3 1
 	//4 2
+	private Vector2 []VerticalFormation = {
+		new Vector2( 0,  0),
+		new Vector2( 0,  -2),
+		new Vector2( 0,  -4),
+		new Vector2(-2, -3),
+		new Vector2(-2, -5),
+		new Vector2(-2,  -1)
+	};
 	//Reference to which of the above formations to use
 	private Vector2 []currentFormation;
+
+
+	//
+	//Macro methods
+	//
 
 	//tell SubSoldier to shoot
 	private void Attack(){
@@ -60,110 +88,203 @@ public class Soldiers : UnitController{
 		foreach(SubSoldier ss in controlledSubUnits){
 			ss.StartCatchingUp(precise);
 		}
+	}
 
+	//Changes units to staggered version if not already
+	private void StaggerFormation(){
+		currentFormation = currentFormation == VerticalFormation
+			? VerticalFormation : StaggeredFormation;
+	}
+
+	//Changes units to staggered version if not already
+	private void UnStaggerFormation(){
+		currentFormation = currentFormation == StaggeredFormation
+			? HorizontalFormation : currentFormation;
+	}
+
+	//Changes units formation
+	private void ChangeFormation(){
+		currentFormation = currentFormation == VerticalFormation
+			? HorizontalFormation : VerticalFormation;
 	}
 
 	//
 	//Unity Callbacks
 	//
 
-	//XXX TEST CODE
-	void Update(){
-		if(Input.GetKeyDown("9")){
-			//Component temp;
-			//temp = controlledSubUnits[0];
-			//controlledSubUnits[0] = controlledSubUnits[3];
-			//controlledSubUnits[3] = temp;
-		}
-	}
-	//XXX TEST CODE
-
 	void Start(){
+		if(playerNumber == 1){
+			HorizontalFormation = new Vector2[6]{
+				new Vector2( 0,  0),
+				new Vector2(-2,  0),
+				new Vector2(-4,  0),
+				new Vector2( 0, -2),
+				new Vector2(-2, -2),
+				new Vector2(-4, -2)
+			};
+			StaggeredFormation = new Vector2[6]{
+				new Vector2( 0,  0.000f),
+				new Vector2(-2, -0.666f),
+				new Vector2(-4, -1.333f),
+				new Vector2( 0, -2.000f),
+				new Vector2(-2, -2.666f),
+				new Vector2(-4, -3.333f)
+			};
+			VerticalFormation = new Vector2[6]{
+				new Vector2( 0,  0),
+				new Vector2( 0,  -2),
+				new Vector2( 0,  -4),
+				new Vector2(-2, -3),
+				new Vector2(-2, -5),
+				new Vector2(-2,  -1)
+			};
+		}else if(playerNumber == 2){
+			//P2
+			//0 1 2
+			//3 4 5
+			HorizontalFormation = new Vector2[6]{
+				new Vector2( 0,  0),
+				new Vector2( 2,  0),
+				new Vector2( 4,  0),
+				new Vector2( 0, -2),
+				new Vector2( 2, -2),
+				new Vector2( 4, -2)
+			};
+			StaggeredFormation = new Vector2[6]{
+				new Vector2( 0,  0.000f),
+				new Vector2( 2, -0.666f),
+				new Vector2( 4, -1.333f),
+				new Vector2( 0, -2.000f),
+				new Vector2( 2, -2.666f),
+				new Vector2( 4, -3.333f)
+			};
+			//P2
+			//0 5
+			//1 3
+			//2 4
+			VerticalFormation = new Vector2[6]{
+				new Vector2( 0,  0),
+				new Vector2( 0,  -2),
+				new Vector2( 0,  -4),
+				new Vector2( 2, -3),
+				new Vector2( 2, -5),
+				new Vector2( 2,  -1)
+			};
+		}
+
 		//When this class is created, it spawns units too
-		controlledSubUnits.CreateChildren(ChildUnit, GoalPositionsHorizontal);
-		currentFormation = GoalPositionsHorizontal;
+		controlledSubUnits.CreateChildren(ChildUnit, HorizontalFormation);
+		//set initial formation
+		currentFormation = HorizontalFormation;
+		attackTimer = new Timer();
+		backTimer = new Timer();
 	}
 
 	//Move and attack
 	void FixedUpdate(){
 
-		//Increment timer for pressing back
-		if(input.x == backdir)
-			backTimer++;
+		//Attack state handling
+		switch(attacking){
+			//Just pressed attack; havent shot; can't input; moving to goals
+			case AttackState.Warmup:
+				//let units act, but with null input
+				//to let subsoldiers move to goal pos
+				foreach(SubSoldier ss in controlledSubUnits){
+					ss.Act();
+				}
 
-		//attacking has 3 distinct parts
-		//and it also stops movement
-		if(attacking){
-			frame++;
+				if(attackTimer.isDone){
+					Attack();
 
-			if(frame == 1){
-				//print("Getting ready...");
-				StartCatchingUp(true);
-			}else if(frame == PreAttackFrame){
-				//print("...Fire!...");
-				Attack();
-			}else if(frame == PreAttackFrame + AttackShootFrame){ 
-				//print("...Done");
-				attacking = false;
-			}
+					attackTimer.SetTimer(CooldownTime);
+					attacking = AttackState.Cooldown;
+				}
+				return;
+				//Just shot; can't input
+			case AttackState.Cooldown:
+				if(attackTimer.isDone){
+					attackTimer.SetTimer(MoveNoShootTime);
+					attacking = AttackState.MoveNoShoot;
+				}
+				return;
+				//Post shooting; can move, can't attack
+			case AttackState.MoveNoShoot:
+				input.a = false;
 
-			//let units act, but with null input
-			foreach(SubSoldier ss in controlledSubUnits){
-				ss.InputMessage(new InputStruct());
-				ss.Act();
-			}
-			return;
+				if(attackTimer.isDone){
+					attacking = AttackState.None;
+				}
+				break; //no return
 		}
 
 
 		//
-		//Initial attacking
+		//Process Input
+		//
+
+		//Tapping back
+		//
+
+		//If back is pressed, start timer for it
+		if(input.x == backdir && lastinput.x != backdir)
+			backTimer.SetTimer(MaxBackButtonReformTime);
+
+		//If back is release, check if it was a tap
+		if(input.x != backdir && lastinput.x == backdir){
+			//Pressing back changes formation
+			//Only reform if pressing back was considered a tap
+			if(!backTimer.isDone){
+				ChangeFormation();
+				StartCatchingUp();
+			}
+			//Reset timer whenver back is released
+			backTimer.SetTimer(MaxBackButtonReformTime);
+		}
 
 		//Position of leader (ie, At(0)), so other units can
 		//be placed relative to him
-		//TODO Cache leader's rigidbody2D
 		Vector2 relativeTo = controlledSubUnits.At(0).rigidbody2D.position;
 
-		//if attack, change state, stop moving
+		//Attacking
+		//
+
 		if(input.a){
-			attacking = true;
-			frame = 0;
-			//Move units slightly forward/backward: P1/P2
-			//TODO random in any direction, make .1f or whatev a public var
-			if(input.x != backdir){
-				relativeTo.x -= .01f * playerNumber == 1 ? 1 : -1;
-			}
-			//Don't give sub units movement input
+			StaggerFormation();
+			int j = 0;
+			foreach(SubSoldier ss in controlledSubUnits)
+				ss.GoalPosition = currentFormation[j++] + relativeTo;
+			StartCatchingUp(true);
+
+			//State change
+			attacking = AttackState.Warmup;
+			attackTimer.SetTimer(WarmupTime);
+
+			//No movement input
 			input.x = 0;
 			input.y = 0;
-		}else if(lastinput.x == backdir && input.x != backdir){
-			//Pressing back changes formation
-			//Only reform if pressing back was considered a tap
-			if(backTimer < MaxBackButtonReformFrames){
-				//Reform units
-				currentFormation = currentFormation == GoalPositionsHorizontal ? GoalPositionsVertical : GoalPositionsHorizontal;
-				StartCatchingUp(false);
-			}
-			//Reset timer whenver back is released
-			backTimer = 0;
-		}
 
+			foreach(SubSoldier ss in controlledSubUnits){
+				ss.InputMessage(input);
+				ss.Act();
+			}
+
+			return;
+		}
 
 		//
 		//Final step; passing input
 		//
 
-		//Iterate over units to give input and move them
+		UnStaggerFormation();
+
+		//Iterate over units to give input, goal pos, and move them
 		int i = 0;
 		foreach(SubSoldier ss in controlledSubUnits){
 			ss.InputMessage(input);
-			//TODO only update when relevant:
-			// Only when there is input!!
 			ss.GoalPosition = currentFormation[i++] + relativeTo;
 			ss.Act();
 		}
 	}
 
 }
-
 
