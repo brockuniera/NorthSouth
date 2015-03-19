@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-//A single SubSoldier, the actual soldiers that move around on screen with the sprites
-//this probably should be abstracted
 public abstract class ControlledUnit : MonoBehaviour {
 
 	//
@@ -13,9 +11,11 @@ public abstract class ControlledUnit : MonoBehaviour {
 	public void InputMessage(InputStruct i){ input = i; }
 
 	//
-	//Player num
+	//Player specifics
 	//
 	protected int playerNumber; 
+	protected sbyte forwarddir { get; private set; }
+	protected sbyte backdir { get; private set; }
 
 	//
 	//Set HP
@@ -41,6 +41,8 @@ public abstract class ControlledUnit : MonoBehaviour {
 		rb2d = GetComponent<Rigidbody2D>();
 		health = InitialHealth;
 		playerNumber = LayerMask.LayerToName(gameObject.layer).Contains("1") ? 1 : 2;
+		forwarddir = playerNumber == 1 ? (sbyte)1 : (sbyte)-1;
+		backdir = (sbyte)-forwarddir;
 	}
 
 	//
