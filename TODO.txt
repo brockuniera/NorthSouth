@@ -1,6 +1,2 @@
-Make a timer class
- Uses Unity's time, instead of counting fixed updates
- Abstraction is easier :)
-
-Minor tweak ups in Soldiers.cs and SubSoldier.cs
-Polish movement
+Working on canon
+Horses get stuck on walls

@@ -88,7 +88,7 @@ MonoBehaviour:
   NoInputSpeed: 8
   ForwardInputSpeed: 14
   DiagonalAngle: {x: 90, y: 30}
-  DiagonalInputSpeed: 12
+  DiagonalInputSpeed: 50
   CatchupSpeed: 7
   CatchupMinDist: .100000001
   RandomMinDistFactor: 0
