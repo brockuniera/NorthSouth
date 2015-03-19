@@ -11,8 +11,8 @@ GameObject:
   - 61: {fileID: 6150316}
   - 50: {fileID: 5014498}
   - 114: {fileID: 11445030}
-  m_Layer: 9
-  m_Name: HorseHurtbox 1
+  m_Layer: 12
+  m_Name: HorseHurtbox 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

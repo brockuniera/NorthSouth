@@ -86,13 +86,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitialHealth: 1
   MoveSpeed: 10
-  AutoCatchupTime: 0
-  CatchupSpeed: 0
-  CatchupMinDist: 0
-  RandomMinDistFactor: 0
-  PreciseCatchupDist: 0
-  CatchupSpeedSlow: 0
-  SlowCatchupDist: 0
+  AutoCatchupTime: 1.29999995
+  CatchupSpeed: 24
+  CatchupMinDist: .200000003
+  RandomMinDistFactor: .200000003
+  PreciseCatchupDist: .0199999996
+  CatchupSpeedSlow: 3
+  SlowCatchupDist: 1.29999995
   GoalPosition: {x: 0, y: 0}
   Projectile: {fileID: 11400000, guid: 84d3b770f345746a8a4ffc90e9feabc7, type: 2}
 --- !u!212 &21200000

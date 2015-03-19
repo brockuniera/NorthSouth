@@ -14,7 +14,7 @@ GameObject:
   - 95: {fileID: 9525752}
   - 114: {fileID: 11425752}
   m_Layer: 8
-  m_Name: SubHorse
+  m_Name: SubHorse 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -36,11 +36,6 @@ public class Soldiers : UnitController{
 	//Child goal positions
 	//
 
-	//TODO player specific
-	//TODO player specific
-	//TODO player specific
-	//TODO player specific
-
 	//P1
 	//2 1 0
 	//5 4 3
@@ -118,6 +113,65 @@ public class Soldiers : UnitController{
 	//
 
 	void Start(){
+		if(playerNumber == 1){
+			HorizontalFormation = new Vector2[6]{
+				new Vector2( 0,  0),
+				new Vector2(-2,  0),
+				new Vector2(-4,  0),
+				new Vector2( 0, -2),
+				new Vector2(-2, -2),
+				new Vector2(-4, -2)
+			};
+			StaggeredFormation = new Vector2[6]{
+				new Vector2( 0,  0.000f),
+				new Vector2(-2, -0.666f),
+				new Vector2(-4, -1.333f),
+				new Vector2( 0, -2.000f),
+				new Vector2(-2, -2.666f),
+				new Vector2(-4, -3.333f)
+			};
+			VerticalFormation = new Vector2[6]{
+				new Vector2( 0,  0),
+				new Vector2( 0,  -2),
+				new Vector2( 0,  -4),
+				new Vector2(-2, -3),
+				new Vector2(-2, -5),
+				new Vector2(-2,  -1)
+			};
+		}else if(playerNumber == 2){
+			//P2
+			//0 1 2
+			//3 4 5
+			HorizontalFormation = new Vector2[6]{
+				new Vector2( 0,  0),
+				new Vector2( 2,  0),
+				new Vector2( 4,  0),
+				new Vector2( 0, -2),
+				new Vector2( 2, -2),
+				new Vector2( 4, -2)
+			};
+			StaggeredFormation = new Vector2[6]{
+				new Vector2( 0,  0.000f),
+				new Vector2( 2, -0.666f),
+				new Vector2( 4, -1.333f),
+				new Vector2( 0, -2.000f),
+				new Vector2( 2, -2.666f),
+				new Vector2( 4, -3.333f)
+			};
+			//P2
+			//0 5
+			//1 3
+			//2 4
+			VerticalFormation = new Vector2[6]{
+				new Vector2( 0,  0),
+				new Vector2( 0,  -2),
+				new Vector2( 0,  -4),
+				new Vector2( 2, -3),
+				new Vector2( 2, -5),
+				new Vector2( 2,  -1)
+			};
+		}
+
 		//When this class is created, it spawns units too
 		controlledSubUnits.CreateChildren(ChildUnit, HorizontalFormation);
 		//set initial formation
@@ -167,7 +221,7 @@ public class Soldiers : UnitController{
 		//
 		//Process Input
 		//
-		
+
 		//Tapping back
 		//
 

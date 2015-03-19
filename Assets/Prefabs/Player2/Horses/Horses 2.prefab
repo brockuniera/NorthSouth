@@ -10,8 +10,8 @@ GameObject:
   - 4: {fileID: 481632}
   - 114: {fileID: 11481634}
   - 114: {fileID: 11481632}
-  m_Layer: 8
-  m_Name: Horses 1
+  m_Layer: 11
+  m_Name: Horses 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3232aaf08dd1d472b9395cf230b4b571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChildUnit: {fileID: 11425752, guid: 1e8c533dcf6d9446d97da3a0511949f3, type: 2}
+  ChildUnit: {fileID: 11425752, guid: c576323a9334547cbb82c055d4cb9724, type: 2}
   MaxBackButtonReformTime: .200000003
 --- !u!1001 &100100000
 Prefab:

@@ -52,10 +52,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChildUnit: {fileID: 11400000, guid: 53018a763f88141ab9ddf78c4cdc3d2e, type: 2}
-  WarmupTime: 0
-  CooldownTime: 0
-  MoveNoShootTime: 0
-  MaxBackButtonReformTime: 0
+  WarmupTime: .300000012
+  CooldownTime: .300000012
+  MoveNoShootTime: .300000012
+  MaxBackButtonReformTime: .25
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

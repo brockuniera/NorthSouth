@@ -119,6 +119,7 @@ MonoBehaviour:
   - {fileID: 11481634, guid: 6dc0216a4688e4d5ea7aa17faa6a5bc5, type: 2}
   Player2Units:
   - {fileID: 11409766, guid: 4fb78dd79c34a4c6cb762cc0c2028a8e, type: 2}
+  - {fileID: 11481634, guid: 0e1525e357b91400b81462e37043b3c1, type: 2}
 --- !u!114 &277745891
 MonoBehaviour:
   m_ObjectHideFlags: 0
