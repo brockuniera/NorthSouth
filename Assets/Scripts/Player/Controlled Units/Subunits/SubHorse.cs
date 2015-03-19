@@ -42,14 +42,17 @@ public class SubHorse : ControlledUnit {
 	//Squared Radius to try and move precisley within
 	public float PreciseCatchupDist;
 
-	//Speed SubHorse moves at to catchup slowly, ie when already close
-	public float CatchupSpeedSlow;
-	//Maximum distance to move slowly within when catching up
-	public float SlowCatchupDist;
-
 	//
 	//Attacking
 	//
+
+	//Attack states
+	private enum AttackState {None, Attacking, MoveNoAttack};
+	private AttackState attacking = AttackState.None;
+
+	//Hurtbox prefab
+	public HorseHurtbox Hurtbox;
+	private HorseHurtbox currentHurtbox;
 
 	//Length hurtbox is present
 	public float AttackingTime;
@@ -57,9 +60,6 @@ public class SubHorse : ControlledUnit {
 	public float MoveNoAttackTime;
 	//Timer for above values
 	private Timer attackTimer;
-	//Am I attacking?
-	private bool attacking;
-
 
 	//Goal Position
 	//
@@ -78,7 +78,7 @@ public class SubHorse : ControlledUnit {
 	}
 
 	void Update(){
-		anim.SetBool("Attacking", attacking);
+		anim.SetBool("Attacking", attacking == AttackState.Attacking);
 	}
 
 	//
@@ -122,7 +122,6 @@ public class SubHorse : ControlledUnit {
 	//
 
 	public override void Act(){
-
 		//Movement
 		//
 
@@ -144,20 +143,36 @@ public class SubHorse : ControlledUnit {
 		//Attacking
 		//
 
-		//TODO alot
-
-		if(input.a){
-			if(!attacking){
-				attacking = true;
-				attackTimer.SetTimer(AttackingTime);
-				Attack();
-			}
+		switch(attacking){
+			case AttackState.None:
+				if(input.a && input.x != backdir){
+					attacking = AttackState.Attacking;
+					attackTimer.SetTimer(AttackingTime);
+					Attack();
+				}
+				break;
+			case AttackState.Attacking:
+				if(attackTimer.isDone){
+					currentHurtbox.Die();
+					currentHurtbox = null;
+					attacking = AttackState.MoveNoAttack;
+					attackTimer.SetTimer(MoveNoAttackTime);
+				}
+				break;
+			case AttackState.MoveNoAttack:
+				if(attackTimer.isDone){
+					attacking = AttackState.None;
+				}
+				break;
 		}
 
 	}
 
 	//spawn the hurt box
 	public override void Attack(){
+		HorseHurtbox hbox = (HorseHurtbox)Instantiate(Hurtbox, rb2d.position, Quaternion.identity);
+		hbox.transform.parent = transform;
+		currentHurtbox = hbox;
 	}
 
 	void OnCollisionExit2D(){

@@ -5,22 +5,6 @@ using System.Collections;
 //XXX THIS CLASS CANNOT HAVE awake()
 public class Horses : UnitController{
 	//
-	//Very basic FSM for attacking
-	//
-
-	//The states we can be in for attacking:
-	// None -- We are not attacking
-	// Attacking -- We are attacking
-	// MoveNoAttack -- We just attacked, so we can't attack right now
-	private enum AttackState {None, Attacking, MoveNoAttack};
-	private AttackState attacking = AttackState.None;
-	//Timer for above states
-	private Timer attackTimer;
-	//Times for each of the above states
-	public float AttackingTime;
-	public float MoveNoAttackTime;
-
-	//
 	//Tap back to reform units
 	//
 
@@ -28,6 +12,13 @@ public class Horses : UnitController{
 	public float MaxBackButtonReformTime;
 	//The timer for above
 	private Timer backTimer;
+
+	//
+	//Active
+	//
+
+	//Have I been activated?
+	public bool Active { get; set; }
 
 	//
 	//Child goal positions
@@ -87,11 +78,13 @@ public class Horses : UnitController{
 	//
 
 	void Start(){
-		//When this class is created, it spawns units too
-		controlledSubUnits.CreateChildren(ChildUnit, VerticalFormation);
 		//set initial formation
-		currentFormation = HorizontalFormation;
-		attackTimer = new Timer();
+		currentFormation = VerticalFormation;
+		//When this class is created, it spawns units too
+		controlledSubUnits.CreateChildren(ChildUnit, currentFormation);
+		//set to not active
+		Active = false; 
+		//timer
 		backTimer = new Timer();
 	}
 
@@ -101,13 +94,25 @@ public class Horses : UnitController{
 		//
 		//Process Input
 		//
+
+		//Check if active
+		//
+		if(!Active){
+			//Non empty input wakes us up
+			if(!input.isEmpty)
+				Active = true;
+			else
+				//Don't act on empty input
+				return;
+		}
 		
 		//Tapping back
 		//
 
 		//If back is pressed, start timer for it
-		if(input.x == backdir && lastinput.x != backdir)
+		if(input.x == backdir && lastinput.x != backdir){
 			backTimer.SetTimer(MaxBackButtonReformTime);
+		}
 
 		//If back is release, check if it was a tap
 		if(input.x != backdir && lastinput.x == backdir){
@@ -117,13 +122,10 @@ public class Horses : UnitController{
 				ChangeFormation();
 				StartCatchingUp();
 			}
-			//Reset timer whenver back is released
-			backTimer.SetTimer(MaxBackButtonReformTime);
 		}
 
 		//Attacking
 		//
-
 
 		if(input.a){
 			StartCatchingUp(true);
