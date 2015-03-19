@@ -24,27 +24,14 @@ public class Horses : UnitController{
 	//Child goal positions
 	//
 
-	//TODO player specific
-	//TODO player specific
-	//TODO player specific
-	//TODO player specific
-
 	//P1
 	//2 1 0
-	private Vector2 []HorizontalFormation = {
-		new Vector2( 0,  0),
-		new Vector2(-2,  0),
-		new Vector2(-4,  0)
-	};
+	private Vector2 []HorizontalFormation;
 	//P1
 	//0
 	//1
 	//2
-	private Vector2 []VerticalFormation = {
-		new Vector2( 0,  0),
-		new Vector2( 0,  -2),
-		new Vector2( 0,  -4)
-	};
+	private Vector2 []VerticalFormation;
 	//Reference to which of the above formations to use
 	private Vector2 []currentFormation;
 
@@ -78,6 +65,32 @@ public class Horses : UnitController{
 	//
 
 	void Start(){
+		//Player specifc formations
+		VerticalFormation = new Vector2[3];
+		if(playerNumber == 1){
+			HorizontalFormation = new Vector2[3] {
+				new Vector2(0,  0),
+				new Vector2(-2,  0),
+				new Vector2(-4,  0)
+			};
+			VerticalFormation = new Vector2[3] {
+				new Vector2(0,  0),
+				new Vector2(0,  -2),
+				new Vector2(0,  -4)
+			};
+		}else if(playerNumber == 2){
+			HorizontalFormation = new Vector2[3] {
+				new Vector2(-4,  0),
+				new Vector2(-2,  0),
+				new Vector2(0,  0)
+			};
+			VerticalFormation = new Vector2[3] {
+				new Vector2(0,  -4),
+				new Vector2(0,  -2),
+				new Vector2(0,  0)
+			};
+		}
+
 		//set initial formation
 		currentFormation = VerticalFormation;
 		//When this class is created, it spawns units too
@@ -105,7 +118,7 @@ public class Horses : UnitController{
 				//Don't act on empty input
 				return;
 		}
-		
+
 		//Tapping back
 		//
 

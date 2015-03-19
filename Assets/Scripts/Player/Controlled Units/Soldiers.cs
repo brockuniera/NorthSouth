@@ -117,16 +117,6 @@ public class Soldiers : UnitController{
 	//Unity Callbacks
 	//
 
-	//XXX TEST CODE
-	void Update(){
-		if(Input.GetKeyDown("9")){
-			//Component temp;
-			//temp = controlledSubUnits[0];
-			//controlledSubUnits[0] = controlledSubUnits[3];
-			//controlledSubUnits[3] = temp;
-		}
-	}//XXX TEST CODE
-
 	void Start(){
 		//When this class is created, it spawns units too
 		controlledSubUnits.CreateChildren(ChildUnit, HorizontalFormation);

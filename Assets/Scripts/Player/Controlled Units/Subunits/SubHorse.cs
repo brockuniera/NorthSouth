@@ -68,6 +68,13 @@ public class SubHorse : ControlledUnit {
 	public Vector2 GoalPosition;
 
 	//
+	//Player 2 specifc
+	//
+
+	private GameObject guyOnHorse;
+	private Animator guyOnHorseAnim;
+
+	//
 	//Unity Callbacks
 	//
 
@@ -75,10 +82,23 @@ public class SubHorse : ControlledUnit {
 		DiagonalAngle.Normalize();
 		diagonalMovementVector = DiagonalAngle * DiagonalInputSpeed;
 		attackTimer = new Timer();
+
+		//Player 2 specific: Guy On Horse
+		if(transform.childCount > 0){
+			guyOnHorse = transform.GetChild(0).gameObject;
+			guyOnHorseAnim = guyOnHorse.GetComponent<Animator>();
+		}
 	}
 
 	void Update(){
-		anim.SetBool("Attacking", attacking == AttackState.Attacking);
+		//Player 2 specific
+		if(guyOnHorseAnim == null)
+			anim.SetBool("Attacking", attacking == AttackState.Attacking);
+		else{
+			guyOnHorseAnim.SetBool("Attacking", attacking == AttackState.Attacking);
+		}
+
+		anim.SetBool("IsMoving", rb2d.velocity != Vector2.zero);
 	}
 
 	//
