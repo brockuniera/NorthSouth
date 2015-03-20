@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour {
 	//
 
 	void Start(){
-		rigidbody2D.velocity = new Vector2(Velocity, 0);
+		GetComponent<Rigidbody2D>().velocity = new Vector2(Velocity, 0);
 	}
 
 	//frame counter, for life time

@@ -40,8 +40,9 @@ public abstract class UnitController : MonoBehaviour{
 	void Awake(){
 		controlledSubUnits = GetComponent<ChildrenList>();
 		string layername = LayerMask.LayerToName(gameObject.layer);
-		if(layername.Contains("Default"))
+		if(layername != "Player 1" && layername != "Player 2")
 			Debug.LogError("UnitController layer not setup correctly!");
+
 		playerNumber = layername.Contains("1") ? 1 : 2;
 		backdir = playerNumber == 1 ? (sbyte)-1 : (sbyte)1;
 	}

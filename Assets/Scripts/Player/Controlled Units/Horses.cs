@@ -148,7 +148,7 @@ public class Horses : UnitController{
 		//Final step; passing input
 		//
 
-		Vector2 relativeTo = controlledSubUnits.At(0).rigidbody2D.position;
+		Vector2 relativeTo = controlledSubUnits.At(0).GetComponent<Rigidbody2D>().position;
 
 		//Iterate over units to give input, goal pos, and move them
 		int i = 0;

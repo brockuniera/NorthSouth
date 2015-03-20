@@ -226,8 +226,9 @@ public class Soldiers : UnitController{
 		//
 
 		//If back is pressed, start timer for it
-		if(input.x == backdir && lastinput.x != backdir)
+		if(input.x == backdir && lastinput.x != backdir){
 			backTimer.SetTimer(MaxBackButtonReformTime);
+		}
 
 		//If back is release, check if it was a tap
 		if(input.x != backdir && lastinput.x == backdir){
@@ -243,7 +244,7 @@ public class Soldiers : UnitController{
 
 		//Position of leader (ie, At(0)), so other units can
 		//be placed relative to him
-		Vector2 relativeTo = controlledSubUnits.At(0).rigidbody2D.position;
+		Vector2 relativeTo = controlledSubUnits.At(0).GetComponent<Rigidbody2D>().position;
 
 		//Attacking
 		//

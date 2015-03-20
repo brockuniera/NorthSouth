@@ -54,8 +54,8 @@ public class PlayerInputHandler : MonoBehaviour {
 	//Methods
 	//
 
-
 	//Sets the instance's keybindings to the default for that player
+	//Must be called before UpdateInput
 	public void SetPlayerKeyBindings(int playernum){
 		//really gross code :(
 		KeyBindings kb = new KeyBindings();
@@ -83,21 +83,23 @@ public class PlayerInputHandler : MonoBehaviour {
 
 	//updates input variables
 	public void UpdateInput(){
-		if(Input.GetKey(binds.right))
+		if(Input.GetKey(binds.right)){
 			x = 1;
-		else if(Input.GetKey(binds.left))
+		}else if(Input.GetKey(binds.left)){
 			x = -1;
-		else
+		}else{
 			x = 0;
+		}
 
-		if(Input.GetKey(binds.up))
+		if(Input.GetKey(binds.up)){
 			y = 1;
-		else if(Input.GetKey(binds.down))
+		}else if(Input.GetKey(binds.down)){
 			y = -1;
-		else
+		}else{
 			y = 0;
-
+		}
 		a = Input.GetKeyDown(binds.a);
 		b = Input.GetKeyDown(binds.b);
 	}
 }
+

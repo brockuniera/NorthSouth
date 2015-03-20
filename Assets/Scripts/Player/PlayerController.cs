@@ -17,10 +17,12 @@ public class PlayerController : MonoBehaviour {
 	private UnitController _currentUnit;
 
 	//input handler
-	private PlayerInputHandler input;
+	private PlayerInputHandler inputHandler;
 
 	//input to be given to units
 	private InputStruct unitInput;
+
+	private bool toResetInput = false;
 
 	//
 	//Public methods
@@ -39,17 +41,15 @@ public class PlayerController : MonoBehaviour {
 		//Setup references
 
 		_chooser = GetComponent<Chooser>();
-		input = GetComponent<PlayerInputHandler>();
+		inputHandler = GetComponent<PlayerInputHandler>();
 
 		//get player number from name (probably a bad idea)
 		//split name by spaces and get the second string returned
-		string s = name.Split(' ')[1];
-		if(s != null)
-			input.SetPlayerKeyBindings(System.Convert.ToInt32(s));
-		else{
-			Debug.LogError("This Player has a malformed name! : " + name );
+		if(name != "Player 1" && name != "Player 2")
 			Application.Quit(); 
-		}
+
+		string s = name.Split(' ')[1];
+		inputHandler.SetPlayerKeyBindings(System.Convert.ToInt32(s));
 
 		//
 		//Setup layers; layer is based off name
@@ -61,21 +61,29 @@ public class PlayerController : MonoBehaviour {
 		//Process and buffer input
 		//
 
-		input.UpdateInput();
+		//clear input if it was used
+		// for use with buffering
+		if(toResetInput){
+			unitInput.x = PlayerInputHandler.XDefault;
+			unitInput.y = PlayerInputHandler.YDefault;
+			unitInput.a = PlayerInputHandler.ADefault;
+		}
 
-		//generate input struct
-		//buffer inputs as well
+		inputHandler.UpdateInput();
+
+		//Generate input struct
+		//Buffer inputs as well
 		// ie if input.x is not default, then update it
-		unitInput.x = input.xAxis != PlayerInputHandler.XDefault ?
-			input.xAxis : unitInput.x;
-		unitInput.y = input.yAxis != PlayerInputHandler.YDefault ?
-			input.yAxis : unitInput.y;
-		unitInput.a = input.aButton != PlayerInputHandler.ADefault ?
-			input.aButton : unitInput.a;
+		unitInput.x = inputHandler.xAxis != PlayerInputHandler.XDefault ?
+			inputHandler.xAxis : unitInput.x;
+		unitInput.y = inputHandler.yAxis != PlayerInputHandler.YDefault ?
+			inputHandler.yAxis : unitInput.y;
+		unitInput.a = inputHandler.aButton != PlayerInputHandler.ADefault ?
+			inputHandler.aButton : unitInput.a;
 
 		//change unit on b button
 		// TODO also have a method to directly change to a unit, thank you
-		if(input.bButton){
+		if(inputHandler.bButton){
 			//XXX Is this OK to have in update?
 			_currentUnit.InputMessage(new InputStruct()); //give null message
 			_currentUnit = _chooser.GetNextUnit();
@@ -84,8 +92,6 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	//This FixedUpdate() should happen first, before any other unit
-	// is there a better way to ensure this than by doing it manually?
-	// 1) We could enumerate thru children and tell them to run
 	void FixedUpdate(){
 		//pass input to unit
 		if(_currentUnit != null){
@@ -94,11 +100,8 @@ public class PlayerController : MonoBehaviour {
 			//Debug.Log("Player Controller's Current Unit is Null");
 		}
 
-		//clear input
-		// for use with buffering
-		unitInput.x = PlayerInputHandler.XDefault;
-		unitInput.y = PlayerInputHandler.YDefault;
-		unitInput.a = PlayerInputHandler.ADefault;
+		//If we use the input, we should mark it to be reset, but not reset it ourselves incase we dont get an update between fixed updates
+		toResetInput = true;
 	}
 
 }
