@@ -1,2 +1,3 @@
 Working on canon
-Horses get stuck on walls
+	p2 prefab
+Clean up unit code

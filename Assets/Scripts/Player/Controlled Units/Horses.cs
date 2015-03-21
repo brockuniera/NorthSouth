@@ -140,7 +140,7 @@ public class Horses : UnitController{
 		//Attacking
 		//
 
-		if(input.a){
+		if(input.a && !lastinput.a){
 			StartCatchingUp(true);
 		}
 

@@ -182,6 +182,35 @@ public class Soldiers : UnitController{
 
 	//Move and attack
 	void FixedUpdate(){
+		//Attacking
+		//
+
+		//Position of leader (ie, At(0)), so other units can
+		//be placed relative to him
+		Vector2 relativeTo = controlledSubUnits.At(0).GetComponent<Rigidbody2D>().position;
+
+		if(attacking == AttackState.None && input.a && !lastinput.a){
+			StaggerFormation();
+			int j = 0;
+			foreach(SubSoldier ss in controlledSubUnits)
+				ss.GoalPosition = currentFormation[j++] + relativeTo;
+			StartCatchingUp(true);
+
+			//State change
+			attacking = AttackState.Warmup;
+			attackTimer.SetTimer(WarmupTime);
+
+			//No movement input
+			input.x = 0;
+			input.y = 0;
+
+			foreach(SubSoldier ss in controlledSubUnits){
+				ss.InputMessage(input);
+				ss.Act();
+			}
+
+			return;
+		}
 
 		//Attack state handling
 		switch(attacking){
@@ -209,8 +238,6 @@ public class Soldiers : UnitController{
 				return;
 				//Post shooting; can move, can't attack
 			case AttackState.MoveNoShoot:
-				input.a = false;
-
 				if(attackTimer.isDone){
 					attacking = AttackState.None;
 				}
@@ -242,35 +269,6 @@ public class Soldiers : UnitController{
 			backTimer.SetTimer(MaxBackButtonReformTime);
 		}
 
-		//Position of leader (ie, At(0)), so other units can
-		//be placed relative to him
-		Vector2 relativeTo = controlledSubUnits.At(0).GetComponent<Rigidbody2D>().position;
-
-		//Attacking
-		//
-
-		if(input.a){
-			StaggerFormation();
-			int j = 0;
-			foreach(SubSoldier ss in controlledSubUnits)
-				ss.GoalPosition = currentFormation[j++] + relativeTo;
-			StartCatchingUp(true);
-
-			//State change
-			attacking = AttackState.Warmup;
-			attackTimer.SetTimer(WarmupTime);
-
-			//No movement input
-			input.x = 0;
-			input.y = 0;
-
-			foreach(SubSoldier ss in controlledSubUnits){
-				ss.InputMessage(input);
-				ss.Act();
-			}
-
-			return;
-		}
 
 		//
 		//Final step; passing input

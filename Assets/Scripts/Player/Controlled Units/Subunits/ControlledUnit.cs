@@ -29,7 +29,7 @@ public abstract class ControlledUnit : MonoBehaviour {
 	//Component caching
 	//
 
-	protected Animator anim;
+	public Animator anim { get; private set; }
 	protected Rigidbody2D rb2d;
 
 	//

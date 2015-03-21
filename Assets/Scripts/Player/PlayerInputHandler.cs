@@ -98,8 +98,8 @@ public class PlayerInputHandler : MonoBehaviour {
 		}else{
 			y = 0;
 		}
-		a = Input.GetKeyDown(binds.a);
-		b = Input.GetKeyDown(binds.b);
+		a = Input.GetKey(binds.a);
+		b = Input.GetKey(binds.b);
 	}
 }
 
