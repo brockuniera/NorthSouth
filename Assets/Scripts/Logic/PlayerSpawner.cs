@@ -8,6 +8,12 @@ public class PlayerSpawner : MonoBehaviour {
 	public static readonly int NumberOfPlayers = 2;
 
 	//
+	//Levels
+	//
+
+	private LevelSelector levelSel;
+
+	//
 	//Prefabs to use
 	//
 	
@@ -35,10 +41,13 @@ public class PlayerSpawner : MonoBehaviour {
 			Debug.LogError("Couldn't find two Players in Hierchay");
 			Application.Quit();
 		}
-		//setup list
+		//setup list of units
 		Units = new UnitController[2][];
 		Units[0] = Player1Units;
 		Units[1] = Player2Units;
+
+		//Setup reference to level selector
+		levelSel = GetComponent<LevelSelector>();
 	}
 
 	//DEBUG
@@ -48,6 +57,9 @@ public class PlayerSpawner : MonoBehaviour {
 		}
 	}
 
+	//
+	//Useful methods
+	//
 
 	//Adds Units to players
 	public void SpawnPlayerUnits(){
@@ -55,16 +67,17 @@ public class PlayerSpawner : MonoBehaviour {
 			//get list
 			ChildrenList list = _players[i].GetComponent<ChildrenList>();
 
-			//add units
+			//add units at spawnpoints
+			Vector3[] spawns = levelSel.GetPlayerSpawns(i + 1);
+			int j = 0;
 			foreach(UnitController unit in Units[i]){
-				list.CreatePrefabAsChild(unit);
+				list.CreatePrefabAsChild(unit, spawns[j++], Quaternion.identity);
 			}
 
 			//Sets player's current unit to whoever was added first
 			_players[i].GetComponent<PlayerController>().InitializeUnitController();
 		}
 	}
-
 
 }
 

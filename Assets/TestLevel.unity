@@ -168,6 +168,7 @@ GameObject:
   - 4: {fileID: 277745889}
   - 114: {fileID: 277745890}
   - 114: {fileID: 277745891}
+  - 114: {fileID: 277745892}
   m_Layer: 0
   m_Name: Logic
   m_TagString: Untagged
@@ -200,8 +201,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player1Units:
   - {fileID: 11409766, guid: e0c058e21a8254881a92710ca57456ee, type: 2}
+  - {fileID: 11481634, guid: 6dc0216a4688e4d5ea7aa17faa6a5bc5, type: 2}
   - {fileID: 11449352, guid: e38f699fbc4b943489690bd09fff69c9, type: 2}
-  Player2Units: []
+  Player2Units:
+  - {fileID: 11481634, guid: 0e1525e357b91400b81462e37043b3c1, type: 2}
+  - {fileID: 11409766, guid: 4fb78dd79c34a4c6cb762cc0c2028a8e, type: 2}
 --- !u!114 &277745891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +218,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitialSeed: -1
+--- !u!114 &277745892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 277745888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8521c63e3232a45edb6a389e6778c87d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Levels: []
 --- !u!1 &317304596
 GameObject:
   m_ObjectHideFlags: 0

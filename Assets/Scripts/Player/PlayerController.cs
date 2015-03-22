@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour {
 	//
 	
 	public void InitializeUnitController(){
+		_chooser.Reset();
 		_currentUnit = _chooser.GetNextUnit();
 	}
 

@@ -68,20 +68,21 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 		AddChild(child);
 	}
 
+	//Spawn unit with default position as this object's location
 	public void CreatePrefabAsChild(Component prefab){
-		CreatePrefabAsChild(prefab, Vector3.zero, Quaternion.identity);
+		CreatePrefabAsChild(prefab, transform.position, Quaternion.identity);
 	}
 
 
 
-	//Creates children with positions specified in []position
+	//Creates children with positions specified in []positions
 	//and adds them to the list
 	public void CreateChildren(Component prefab, Vector2 []positions){
 		var rot = transform.rotation;
 
 		//Create children in position, add to list
-		foreach(Vector3 p in positions){ //Implicit conversion from Vector2 to Vector3
-			CreatePrefabAsChild(prefab, p, rot);
+		foreach(Vector3 p in positions){
+			CreatePrefabAsChild(prefab, p + transform.position, rot);
 		}
 	}
 
