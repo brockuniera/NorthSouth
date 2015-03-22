@@ -97,7 +97,6 @@ public class Canons : UnitController{
 	void FixedUpdate(){
 		//TODO Canon distance shooting, reticule
 
-		Debug.Log("input.a " + input.a + " lastinput: " + lastinput.a);
 		//Attacking
 		//
 
