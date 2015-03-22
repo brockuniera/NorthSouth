@@ -12,9 +12,9 @@ public class PlayerSpawner : MonoBehaviour {
 	//
 	
 	//Units given to each player
-	public UnitController []Player1Units;
-	public UnitController []Player2Units;
-	private UnitController [][]Units;
+	public UnitController[] Player1Units;
+	public UnitController[] Player2Units;
+	private UnitController[][] Units;
 
 	//
 	//Private data
@@ -60,8 +60,8 @@ public class PlayerSpawner : MonoBehaviour {
 				list.CreatePrefabAsChild(unit);
 			}
 
-			PlayerController pc = _players[i].GetComponent<PlayerController>();	
-			pc.InitializeUnitController();
+			//Sets player's current unit to whoever was added first
+			_players[i].GetComponent<PlayerController>().InitializeUnitController();
 		}
 	}
 

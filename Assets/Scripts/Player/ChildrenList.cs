@@ -29,6 +29,11 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 	//Public methods
 	//
 
+	public Component this[int i]{
+		get { return _children[i]; }
+		set { _children[i] = value; }
+	}
+
 	public Component At(int index){
 		return _children[index];
 	}
@@ -57,14 +62,13 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 		comp.transform.parent = transform;
 	}
 
-	//TODO Layers?
 	//Uses a prefab and Instantiates it itself
 	public void CreatePrefabAsChild(Component prefab, Vector3 position, Quaternion rotation){
 		Component child = (Component)Instantiate(prefab, position, rotation);
 		AddChild(child);
 	}
 
-	public void CreatePrefabAsChild(Component  prefab){
+	public void CreatePrefabAsChild(Component prefab){
 		CreatePrefabAsChild(prefab, Vector3.zero, Quaternion.identity);
 	}
 
@@ -85,10 +89,6 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 	//Enumerator Things
 	//
 	
-	public Component this[int i]{
-		get { return _children[i]; }
-		set { _children[i] = value; }
-	}
 	IEnumerator<Component> IEnumerable<Component>.GetEnumerator(){
 		return this._children.GetEnumerator();
 	}

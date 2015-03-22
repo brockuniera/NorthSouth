@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour {
 	//input to be given to units
 	private InputStruct unitInput;
 
+	//Should input be cleared on next Update()?
 	private bool toResetInput = false;
 
 	//
@@ -68,7 +69,6 @@ public class PlayerController : MonoBehaviour {
 			unitInput.y = PlayerInputHandler.YDefault;
 			unitInput.a = PlayerInputHandler.ADefault;
 			toResetInput = false;
-			
 		}
 
 		inputHandler.UpdateInput();
@@ -97,14 +97,11 @@ public class PlayerController : MonoBehaviour {
 
 	//This FixedUpdate() should happen first, before any other unit
 	void FixedUpdate(){
-		//pass input to unit
-		if(_currentUnit != null){
+		//pass input to unit, if it exists
+		if(_currentUnit != null)
 			_currentUnit.InputMessage(unitInput);
-		}else{
-			//Debug.Log("Player Controller's Current Unit is Null");
-		}
 
-		//If we use the input, we should mark it to be reset, but not reset it ourselves incase we dont get an update between fixed updates
+		//We used the input, we should mark it to be reset, but not reset it ourselves incase we dont get an update between fixed updates
 		toResetInput = true;
 	}
 
