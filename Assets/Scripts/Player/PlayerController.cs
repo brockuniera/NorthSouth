@@ -67,6 +67,8 @@ public class PlayerController : MonoBehaviour {
 			unitInput.x = PlayerInputHandler.XDefault;
 			unitInput.y = PlayerInputHandler.YDefault;
 			unitInput.a = PlayerInputHandler.ADefault;
+			toResetInput = false;
+			
 		}
 
 		inputHandler.UpdateInput();
@@ -81,12 +83,14 @@ public class PlayerController : MonoBehaviour {
 		unitInput.a = inputHandler.aButton != PlayerInputHandler.ADefault ?
 			inputHandler.aButton : unitInput.a;
 
-		//change unit on b button
+		//change unit on b button down
 		// TODO also have a method to directly change to a unit, thank you
 		if(inputHandler.bButton){
-			//XXX Is this OK to have in update?
-			_currentUnit.InputMessage(new InputStruct()); //give null message
-			_currentUnit = _chooser.GetNextUnit();
+			UnitController next = _chooser.GetNextUnit();
+			if(_currentUnit != next){
+				_currentUnit.InputMessage(new InputStruct()); //give null message
+				_currentUnit = next;
+			}
 		}
 
 	}

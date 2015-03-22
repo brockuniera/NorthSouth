@@ -99,7 +99,7 @@ public class PlayerInputHandler : MonoBehaviour {
 			y = 0;
 		}
 		a = Input.GetKey(binds.a);
-		b = Input.GetKey(binds.b);
+		b = Input.GetKeyDown(binds.b);
 	}
 }
 
