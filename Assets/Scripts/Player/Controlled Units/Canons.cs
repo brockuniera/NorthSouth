@@ -113,9 +113,8 @@ public class Canons : UnitController{
 			case AttackState.None:
 				break;
 			case AttackState.Charging:
-				//on up or timeout: shoot
+				//on key up or timeout: shoot
 				if((!input.a && lastinput.a) || attackTimer.isDone){
-					//Debug.Log("Key up!");
 					Attack();
 					attacking = AttackState.Cooldown;
 					attackTimer.SetTimer(CooldownTime);
