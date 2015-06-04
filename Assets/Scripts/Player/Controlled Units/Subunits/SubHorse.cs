@@ -63,9 +63,15 @@ public class SubHorse : ControlledUnit {
 
 	//Goal Position
 	//
-	// this unit attempts to move to its goal position
-	// modified by Horses class
-	public Vector2 GoalPosition;
+	// This unit attempts to move to its goal position
+	// Modified by Horses class
+	public Vector2 GoalPosition { get; set; }
+
+	//Wrapping around
+	//
+
+	//Are we currently wrapping around the level?
+	public bool isWrapping = false;
 
 	//
 	//Player 2 specifc
@@ -91,10 +97,10 @@ public class SubHorse : ControlledUnit {
 	}
 
 	void Update(){
-		//Player 2 specific
-		if(guyOnHorseAnim == null)
+		if(guyOnHorseAnim == null){
 			anim.SetBool("Attacking", attacking == AttackState.Attacking);
-		else{
+		}else{
+			//Player 2 specific
 			guyOnHorseAnim.SetBool("Attacking", attacking == AttackState.Attacking);
 		}
 
@@ -112,6 +118,22 @@ public class SubHorse : ControlledUnit {
 			isCatchingUp = true;
 			//Calculate how close to get before stopping
 			minDist = precise ? PreciseCatchupDist : CatchupMinDist + RandomMinDistFactor * Random.value;
+		}
+	}
+
+	private void CatchUp(){
+		//Catching up
+		if(isCatchingUp){
+			Vector2 dist = GoalPosition - rb2d.position;
+			float distSqrMag = dist.sqrMagnitude;
+			if(distSqrMag > minDist){
+				//I'm too far; I'll catchup to the unit!
+				Vector2 catchup = dist.normalized * CatchupSpeed;
+				rb2d.velocity += catchup;
+			}else{
+				//I caught up!
+				isCatchingUp = false;
+			}
 		}
 	}
 
@@ -146,19 +168,8 @@ public class SubHorse : ControlledUnit {
 		//
 
 		SetVelocityFromInput();
+		CatchUp();
 
-		if(isCatchingUp){
-			Vector2 dist = GoalPosition - rb2d.position;
-			float distSqrMag = dist.sqrMagnitude;
-			if(distSqrMag > minDist){
-				//I'm too far; I'll catchup to the unit!
-				Vector2 catchup = dist.normalized * CatchupSpeed;
-				rb2d.velocity += catchup;
-			}else{
-				//I caught up!
-				isCatchingUp = false;
-			}
-		}
 
 		//Attacking
 		//
@@ -196,7 +207,30 @@ public class SubHorse : ControlledUnit {
 	}
 
 	void OnCollisionExit2D(){
+		//We should start catching up when we get off of a rock or something
 		StartCatchingUp();
+	}
+
+	//Looping around
+	void OnCollisionEnter2D(Collision2D col){
+		//Only worry about colliding with level borders
+		//
+		if(col.transform.parent.name == "HorseLoops"){
+			//1) Tell controller we're in "limbo"
+			//	So it will know when to start timing for returning horses
+
+			/* Or just let him check every fixedupdate() lol */
+			isWrapping = true;
+
+			//2) Disable collisions
+			//	Do this by setting layers and that kind of thing
+			//	So we can walk through the wall to offscreen
+
+			//3) Teleport to hard left/right, relative to spawn
+			//	Only after we hit a trigger that says we're past edge of screen
+			
+			//4) Disable receiving input
+		}
 	}
 
 }

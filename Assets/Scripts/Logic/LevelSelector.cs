@@ -17,6 +17,7 @@ public class LevelSelector : MonoBehaviour {
 	//Public methods
 	//
 
+	//Get the spawn points for the current level
 	public Vector3[] GetPlayerSpawns(int playernum){
 		if(playernum > 2 || playernum < 1){
 			Debug.LogError("Player number " + playernum + " is out of range!");
@@ -48,6 +49,11 @@ public class LevelSelector : MonoBehaviour {
 		}
 
 		return spawnPoints;
+	}
+
+	//Get name of current level
+	public string GetCurrentLevelName(){
+		return currentLevel.name;
 	}
 
 	//

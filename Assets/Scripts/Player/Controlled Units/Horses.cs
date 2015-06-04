@@ -35,6 +35,12 @@ public class Horses : UnitController{
 	//Reference to which of the above formations to use
 	private Vector2 []currentFormation;
 
+	//
+	//Wrapping around screen
+	//
+
+	//Time delay for wrapping around
+	public float TimeToWrap;
 
 	//
 	//Macro methods
@@ -118,6 +124,10 @@ public class Horses : UnitController{
 				//Don't act on empty input
 				return;
 		}
+
+		//Wrapping around screen
+		//
+		//TODO Does this go here?
 
 		//Tapping back
 		//

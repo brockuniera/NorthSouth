@@ -67,7 +67,8 @@ public class PlayerSpawner : MonoBehaviour {
 			//get list
 			ChildrenList list = _players[i].GetComponent<ChildrenList>();
 
-			//add units at spawnpoints
+			//add units at spawnpoints for respective players\
+			//players are indexed like 1,2 by GetPlayerSpawns
 			Vector3[] spawns = levelSel.GetPlayerSpawns(i + 1);
 			int j = 0;
 			foreach(UnitController unit in Units[i]){
