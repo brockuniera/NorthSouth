@@ -17,6 +17,9 @@ public abstract class ControlledUnit : MonoBehaviour {
 	protected sbyte forwarddir { get; private set; }
 	protected sbyte backdir { get; private set; }
 
+	public bool isPlayerOne { get{ return playerNumber == 1; }}
+	public bool isPlayerTwo { get{ return playerNumber == 2; }}
+
 	//
 	//Set HP
 	//
