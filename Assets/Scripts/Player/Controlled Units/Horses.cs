@@ -51,7 +51,8 @@ public class Horses : UnitController{
 	public void RespawnHorsesAt(Vector2 pos){
 		controlledSubUnits.CreateChildren(
 				ChildUnit,
-				HorizontalFormation.Select(x => x + pos - (Vector2)transform.position).ToArray()
+				HorizontalFormation.Select(x => x + pos).ToArray(),
+				true
 				);
 	}
 

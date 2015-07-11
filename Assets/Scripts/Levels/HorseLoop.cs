@@ -4,7 +4,9 @@ using GameObjectExtensions;
 
 public class HorseLoop : ExtraBehaviour {
 
-	public float TimeToRespawn = 8.0f;
+	public float TimeToRespawn = 5.0f;
+
+	public Transform RespawnX;
 
 	private int horsesSaved;
 
@@ -15,11 +17,11 @@ public class HorseLoop : ExtraBehaviour {
 
 		yield return new WaitForSeconds(TimeToRespawn);
 
-		print("spawning horses! at " + respawnPos);
+		var otherplayer = GetOtherPlayer();
 
-		GetOtherPlayer().BroadcastMessage("RespawnHorsesAt", respawnPos);
-		GetOtherPlayer().GetComponentsInChildren<Horses>()[0].inLimbo = false;
-		GetOtherPlayer().GCInKids<Horses>()[0].InputMessage(InputStruct.Empty);
+		otherplayer.BroadcastMessage("RespawnHorsesAt", respawnPos);
+		otherplayer.GCInKids<Horses>()[0].inLimbo = false;
+		otherplayer.GCInKids<Horses>()[0].InputMessage(InputStruct.Empty);
 
 		horsesSaved = 0;
 	}
@@ -32,7 +34,7 @@ public class HorseLoop : ExtraBehaviour {
 		// SubHorse to collide with us
 		if(horsesSaved == 0){
 			respawnPos = new Vector2(
-					-transform.position.x,
+					RespawnX.position.x,
 					horse.transform.position.y
 					);
 		}

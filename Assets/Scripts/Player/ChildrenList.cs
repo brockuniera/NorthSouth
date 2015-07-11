@@ -77,12 +77,13 @@ public class ChildrenList : MonoBehaviour, IEnumerable<Component> {
 
 	//Creates children with positions specified in []positions
 	//and adds them to the list
-	public void CreateChildren(Component prefab, Vector2 []positions){
+	public void CreateChildren(Component prefab, Vector2 []positions, bool absolute=false){
 		var rot = transform.rotation;
+		Vector3 relpos = absolute ? Vector3.zero : transform.position;
 
 		//Create children in position, add to list
 		foreach(Vector3 p in positions){
-			CreatePrefabAsChild(prefab, p + transform.position, rot);
+			CreatePrefabAsChild(prefab, p + relpos, rot);
 		}
 	}
 
