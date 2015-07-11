@@ -18,10 +18,11 @@ public class HorseLoop : ExtraBehaviour {
 		yield return new WaitForSeconds(TimeToRespawn);
 
 		var otherplayer = GetOtherPlayer();
+		var horses = otherplayer.GC<PlayerController>().horses;
 
 		otherplayer.BroadcastMessage("RespawnHorsesAt", respawnPos);
-		otherplayer.GCInKids<Horses>()[0].inLimbo = false;
-		otherplayer.GCInKids<Horses>()[0].InputMessage(InputStruct.Empty);
+		horses.inLimbo = false;
+		horses.InputMessage(InputStruct.Empty);
 
 		horsesSaved = 0;
 	}
@@ -52,7 +53,6 @@ public class HorseLoop : ExtraBehaviour {
 			if(GetOtherPlayer().GetComponent<PlayerController>().activeController is Horses)
 				GetOtherPlayer().SendMessage("CycleUnits");
 
-			//GetOtherPlayer().GetComponentsInChildren<Horses>()[0].Active = false;
 			StartCoroutine(SpawnHorseAfter());
 		}
 
