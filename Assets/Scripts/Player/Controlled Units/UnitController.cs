@@ -24,7 +24,7 @@ public abstract class UnitController : MonoBehaviour{
 	//
 	
 	//List of units
-	protected ChildrenList controlledSubUnits;
+	public ChildrenList controlledSubUnits;
 
 	//
 	//Prefab

@@ -34,6 +34,15 @@ public class PlayerController : MonoBehaviour {
 		_currentUnit = _chooser.GetNextUnit();
 	}
 
+	// Cycle to the next unit in our list of controlled units
+	public void CycleUnits(){
+		UnitController next = _chooser.GetNextUnit();
+		if(_currentUnit != next){
+			_currentUnit.InputMessage(new InputStruct()); //give null message
+			_currentUnit = next;
+		}
+	}
+
 	//
 	//Unity Callbacks
 	//
@@ -87,11 +96,7 @@ public class PlayerController : MonoBehaviour {
 		//change unit on b button down
 		// TODO also have a method to directly change to a unit, thank you
 		if(inputHandler.bButton){
-			UnitController next = _chooser.GetNextUnit();
-			if(_currentUnit != next){
-				_currentUnit.InputMessage(new InputStruct()); //give null message
-				_currentUnit = next;
-			}
+			CycleUnits();
 		}
 
 	}

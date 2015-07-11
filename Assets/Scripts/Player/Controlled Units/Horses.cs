@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 //'Horses' type of unit
 //XXX THIS CLASS CANNOT HAVE awake()
@@ -41,6 +42,21 @@ public class Horses : UnitController{
 
 	//Time delay for wrapping around
 	public float TimeToWrap;
+
+	//
+	//Limbo
+	//
+	
+	public void RespawnHorsesAt(Vector2 pos){
+		controlledSubUnits.CreateChildren(
+				ChildUnit,
+				HorizontalFormation.Select(x => x + pos - (Vector2)transform.position).ToArray()
+				);
+	}
+
+	public bool inLimbo {
+		get; set;
+	}
 
 	//
 	//Macro methods
@@ -110,6 +126,10 @@ public class Horses : UnitController{
 	//Move and attack
 	void FixedUpdate(){
 
+		// If we're in do nothing
+		if(inLimbo)
+			return;
+
 		//
 		//Process Input
 		//
@@ -124,10 +144,6 @@ public class Horses : UnitController{
 				//Don't act on empty input
 				return;
 		}
-
-		//Wrapping around screen
-		//
-		//TODO Does this go here?
 
 		//Tapping back
 		//
