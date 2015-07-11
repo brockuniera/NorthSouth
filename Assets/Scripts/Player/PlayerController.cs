@@ -49,6 +49,22 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	//
+	//Unit selectors
+	//
+
+	public UnitController horses{
+		get { return GetComponentsInChildren<Horses>()[0]; }
+	}
+
+	public UnitController soldiers{
+		get { return GetComponentsInChildren<Soldiers>()[0]; }
+	}
+
+	public UnitController cannons{
+		get { return GetComponentsInChildren<Canons>()[0]; }
+	}
+
+	//
 	//Unity Callbacks
 	//
 
