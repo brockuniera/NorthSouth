@@ -47,6 +47,7 @@ public class Horses : UnitController{
 	//Limbo
 	//
 	
+	// Respawn our horses at pos
 	public void RespawnHorsesAt(Vector2 pos){
 		controlledSubUnits.CreateChildren(
 				ChildUnit,
@@ -54,8 +55,19 @@ public class Horses : UnitController{
 				);
 	}
 
+	// Are our horses looping around the level right now?
+	private bool limbo = false;
 	public bool inLimbo {
-		get; set;
+		get { return limbo; }
+		set{
+			if(value){
+				isSelectable = false;
+				Active = false;
+			}else{
+				isSelectable = true;
+			}
+			limbo = value;
+		}
 	}
 
 	//
@@ -125,10 +137,6 @@ public class Horses : UnitController{
 
 	//Move and attack
 	void FixedUpdate(){
-
-		// If we're in do nothing
-		if(inLimbo)
-			return;
 
 		//
 		//Process Input

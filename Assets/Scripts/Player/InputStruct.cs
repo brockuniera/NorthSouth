@@ -6,5 +6,15 @@ public struct InputStruct{
 	public bool isEmpty{
 		get{ return x == 0 && y == 0 && a == false; }
 	}
+
+	public InputStruct(sbyte x, sbyte y, bool a){
+		this.x = x;
+		this.y = y;
+		this.a = a;
+	}
+
+	public static InputStruct Empty {
+		get { return new InputStruct(0, 0, false); }
+	}
 }
 

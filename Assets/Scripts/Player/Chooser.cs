@@ -17,10 +17,21 @@ public class Chooser : MonoBehaviour {
 	//chosen unit's index
 	private int _index;
 
+	private void Increment(){
+		//Increment
+		_index++;
+
+		//Implement circular list
+		if(_index == _children.Count){
+			_index = 0;
+		}
+	}
+
 
 	public void Reset(){
 		_index = 0;
 	}
+
 
 	//
 	//Unity callbacks
@@ -38,13 +49,11 @@ public class Chooser : MonoBehaviour {
 
 		UnitController toReturn = _children.At(_index).GetComponent<UnitController>();
 
-		//Increment
-		_index++;
+		Increment();
 
-		//Implement circular list
-		if(_index == _children.Count){
-			_index = 0;
-		}
+		// Soft implementation of UnitControllers being unselectable
+		if(!_children.At(_index).GetComponent<UnitController>().isSelectable)
+			Increment();
 
 		return toReturn;
 	}

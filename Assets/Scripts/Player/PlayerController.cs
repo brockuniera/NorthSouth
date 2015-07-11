@@ -38,9 +38,14 @@ public class PlayerController : MonoBehaviour {
 	public void CycleUnits(){
 		UnitController next = _chooser.GetNextUnit();
 		if(_currentUnit != next){
-			_currentUnit.InputMessage(new InputStruct()); //give null message
+			_currentUnit.InputMessage(InputStruct.Empty); //give null message
 			_currentUnit = next;
 		}
+	}
+	
+	// Returns the Unit Controller currently receiving input
+	public UnitController activeController {
+		get { return _currentUnit; }
 	}
 
 	//
