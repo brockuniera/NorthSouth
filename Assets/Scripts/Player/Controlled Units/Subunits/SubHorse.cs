@@ -51,8 +51,8 @@ public class SubHorse : ControlledUnit {
 	private AttackState attacking = AttackState.None;
 
 	//Hurtbox prefab
-	public HorseHurtbox Hurtbox;
-	private HorseHurtbox currentHurtbox;
+	public Hurtbox hurtbox;
+	private Hurtbox currentHurtbox;
 
 	//Length hurtbox is present
 	public float AttackingTime;
@@ -170,7 +170,6 @@ public class SubHorse : ControlledUnit {
 		SetVelocityFromInput();
 		CatchUp();
 
-
 		//Attacking
 		//
 
@@ -196,12 +195,11 @@ public class SubHorse : ControlledUnit {
 				}
 				break;
 		}
-
 	}
 
 	//spawn the hurt box
 	public override void Attack(){
-		HorseHurtbox hbox = (HorseHurtbox)Instantiate(Hurtbox, rb2d.position, Quaternion.identity);
+		Hurtbox hbox = (Hurtbox)Instantiate(hurtbox, rb2d.position, Quaternion.identity);
 		hbox.transform.parent = transform;
 		currentHurtbox = hbox;
 	}

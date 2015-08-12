@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GameObjectExtensions;
 
 //A single SubCanon
 public class SubCanon : ControlledUnit {
-
 
 	//
 	//Movement
@@ -16,26 +16,36 @@ public class SubCanon : ControlledUnit {
 	//Speed while charging
 	public float SlowSpeed;
 
+	// Are we currently moving slow?
 	public bool isSlow { get; set; }
 
 	//
 	//Attacking
 	//
+
+	// Drawn reticule
+	public CanonReticule Reticule;
+	private CanonReticule m_reticule;
 	
 	//Projectilve prefab
-	public Bullet Canonball;
+	public Canonball CanonballToSpawn;
 
 	//Where to spawn projectile, relative to transform.position
 	public Vector2 MuzzleRelative;
+
+	// The transform of our targeting reticule
+	private Transform t_reticule;
 
 	//
 	//Unity Callbacks
 	//
 
 	void Start(){
+		// Nothing
 	}
 
 	void Update(){
+		// Nothing
 	}
 
 	//
@@ -43,11 +53,35 @@ public class SubCanon : ControlledUnit {
 	//
 
 	public void StartCharging(){
+		// Spawn and save an instance of our reticule
+		m_reticule = Instantiate(
+			Reticule,
+			transform.position + (Vector3)MuzzleRelative,
+			Quaternion.identity
+		) as CanonReticule;
+
+		m_reticule.transform.parent = transform;
+
+		// Setup our reticule
+		m_reticule.Setup(transform.parent.GetComponent<Canons>());
 	}
 
-	//Spawn projectile
 	public override void Attack(){
-		Instantiate(Canonball, transform.position + (Vector3)MuzzleRelative, Quaternion.identity);
+		// Spawn projectile
+		Canonball cball = Instantiate(
+			CanonballToSpawn,
+			transform.position + (Vector3)MuzzleRelative,
+			Quaternion.identity
+		) as Canonball;
+
+		// Get parent
+		Canons parent = transform.parent.gameObject.GetComponent<Canons>() as Canons;
+
+		// Tell our cball whats up
+		cball.Setup(parent.percentCharge);
+
+		// Tell our reticule to stop moving
+		m_reticule.StopMoving();
 	}
 
 	public void Cooldown(){
@@ -64,7 +98,7 @@ public class SubCanon : ControlledUnit {
 	}
 
 	//
-	//Movement
+	// Movement
 	//
 
 	public override void Act(){

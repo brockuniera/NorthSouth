@@ -89,9 +89,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitialHealth: 1
-  MoveSpeed: 10
-  SlowSpeed: 1
-  Canonball: {fileID: 11400000, guid: 9f7e18cb2770f43f98826ff8cdc4f92a, type: 2}
+  MoveSpeed: 6
+  SlowSpeed: 2
+  Reticule: {fileID: 11455688, guid: 8533094d549af4f8c9f1f08d23f3437d, type: 2}
+  CanonballToSpawn: {fileID: 11441058, guid: 9f7e18cb2770f43f98826ff8cdc4f92a, type: 2}
   MuzzleRelative: {x: 1, y: 0}
 --- !u!212 &21233016
 SpriteRenderer:

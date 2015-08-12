@@ -6,6 +6,17 @@ using System.Collections;
 public class Canons : UnitController{
 
 	//
+	// Distance/Velocity
+	//
+
+	// Maximum distance canonball can travel
+	public static float maxDistance = 50.0f;
+	// Minimum distance canonball can travel
+	public static float minDistance = 0.2f;
+	// Unity units per Time.fixedDeltaTime
+	public static float Velocity = 14.0f;
+
+	//
 	//Attacking FSM
 	//
 
@@ -28,7 +39,6 @@ public class Canons : UnitController{
 	//
 
 	//How much percent has our timer gone through?
-	//TODO
 	//
 	// .getTime = -1 * Charging time
 	// |                .getTime = 0
@@ -70,15 +80,16 @@ public class Canons : UnitController{
 		}
 	}
 
-	private void SetSlowSpeed(){
-		foreach(SubCanon sc in controlledSubUnits){
-			sc.isSlow = true;
-		}
-	}
-
 	private void SetNormalSpeed(){
 		foreach(SubCanon sc in controlledSubUnits){
 			sc.isSlow = false;
+		}
+	}
+
+	private void SetStartCharging(){
+		foreach(SubCanon sc in controlledSubUnits){
+			sc.StartCharging();
+			sc.isSlow = true;
 		}
 	}
 
@@ -105,7 +116,7 @@ public class Canons : UnitController{
 				input.a && !lastinput.a){
 			attacking = AttackState.Charging;
 			attackTimer.SetTimer(ChargingTime);
-			SetSlowSpeed();
+			SetStartCharging();
 			//Debug.Log("Key down!");
 		}
 
@@ -132,7 +143,6 @@ public class Canons : UnitController{
 					SetNormalSpeed();
 				}
 				break;
-
 		}
 
 		//Send Input
@@ -143,8 +153,6 @@ public class Canons : UnitController{
 			sc.InputMessage(input);
 			sc.Act();
 		}
-
 	}
-
 }
 

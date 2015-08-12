@@ -1,63 +1,44 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &117184
+--- !u!1 &133570
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 412158}
-  - 114: {fileID: 11439846}
-  - 114: {fileID: 11449352}
+  - 4: {fileID: 447484}
+  - 114: {fileID: 11495644}
   m_Layer: 8
-  m_Name: Canons 1
+  m_Name: debugprefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &412158
+--- !u!4 &447484
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 117184}
+  m_GameObject: {fileID: 133570}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.10707951, y: -95.8850098, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11439846
+--- !u!114 &11495644
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 117184}
+  m_GameObject: {fileID: 133570}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 689556bab8def43428348e4df76cbdfe, type: 3}
+  m_Script: {fileID: 11500000, guid: 31d4a22abb88a4410ad33e21ff5846e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11449352
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 117184}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0dbf4fd25f334bb982d5cb95a454413, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controlledSubUnits: {fileID: 0}
-  ChildUnit: {fileID: 11476630, guid: 4d8404534d93e4847b2e768917aceba5, type: 2}
-  ChargingTime: 3
-  CooldownTime: .300000012
-  PostShootSlowMoveTime: .400000006
-  SpawnPoints:
-  - {x: 0, y: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -67,5 +48,5 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 117184}
+  m_RootGameObject: {fileID: 133570}
   m_IsPrefabParent: 1
