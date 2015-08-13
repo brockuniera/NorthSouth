@@ -17,21 +17,16 @@ public class Chooser : MonoBehaviour {
 	//chosen unit's index
 	private int _index;
 
-	private void Increment(){
+	// Move to next element in list in a circular way
+	private void increment(){
 		//Increment
 		_index++;
 
 		//Implement circular list
-		if(_index == _children.Count){
+		if(_index >= _children.Count){
 			_index = 0;
 		}
 	}
-
-
-	public void Reset(){
-		_index = 0;
-	}
-
 
 	//
 	//Unity callbacks
@@ -42,21 +37,28 @@ public class Chooser : MonoBehaviour {
 		_index = 0;
 	}
 
-	//If user presses B, changes
+	// If user presses B, changes control to next unit in list.
 	public UnitController GetNextUnit(){
 		if(_children.Count == 0)
 			return null;
 
+		increment();
+
 		UnitController toReturn = _children.At(_index).GetComponent<UnitController>();
-
-		Increment();
-
-		// Soft implementation of UnitControllers being unselectable
-		if(!_children.At(_index).GetComponent<UnitController>().isSelectable)
-			Increment();
 
 		return toReturn;
 	}
 
+	// Reset our list
+	public void Reset(){
+		_index = 0;
+	}
+
+	// Used by a UnitController to remove itself from our
+	// children list.
+	public void RemoveFromList(Component comp){
+		// Increment because we lost our current unit.
+		_children.RemoveFromList(comp);
+	}
 }
 

@@ -58,9 +58,7 @@ public abstract class UnitController : ExtraBehaviour{
 
 	public void Die(){
 		//Remove self from list
-		Transform dad = transform.parent;
-		ChildrenList cl = dad.GetComponent<ChildrenList>();
-		cl.RemoveFromList(this);
+		GetComponentInParent<Chooser>().RemoveFromList(this);
 
 		//destroy instance
 		Destroy(gameObject);
