@@ -14,7 +14,7 @@ public class Canons : UnitController{
 	// Minimum distance canonball can travel
 	public static float minDistance = 0.2f;
 	// Unity units per Time.fixedDeltaTime
-	public static float Velocity = 14.0f;
+	public static float CanonballVelocity = 14.0f;
 
 	//
 	//Attacking FSM
@@ -59,6 +59,15 @@ public class Canons : UnitController{
 				return (attackTimer.getTime + ChargingTime ) / ChargingTime;
 			else
 				return 0.0f;
+		}
+	}
+
+	// Relative distance from starting point projectile/reticule should be.
+	// This is a function of percentCharge and player number.
+	public float relativeDistance {
+		get {
+			float dist = percentCharge * maxDistance + minDistance;
+			return isPlayerOne ? dist : -dist;
 		}
 	}
 
@@ -117,7 +126,6 @@ public class Canons : UnitController{
 			attacking = AttackState.Charging;
 			attackTimer.SetTimer(ChargingTime);
 			SetStartCharging();
-			//Debug.Log("Key down!");
 		}
 
 		switch(attacking){

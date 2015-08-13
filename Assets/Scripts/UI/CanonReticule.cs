@@ -3,6 +3,9 @@ using System.Collections;
 
 public class CanonReticule : MonoBehaviour {
 
+	// How long the reticule stays alive after reaching its destination
+	public float PostMoveAliveTime = 1.0f;
+
 	// Are we still moving to the right?
 	// Or has a target been chosen to die?
 	private bool isMoving = true;
@@ -11,9 +14,8 @@ public class CanonReticule : MonoBehaviour {
 	// Relevant data to set position with
 	//
 
+	// Our starting x position
 	private float startXPos;
-	private float minDist;
-	private float maxDist;
 	private Canons canon; // Knows how far we are, as percentage
 
 	//
@@ -22,11 +24,11 @@ public class CanonReticule : MonoBehaviour {
 
 	// Setup all needed data to do what we gotta do
 	public void Setup(Canons parent){
+		// Save canon so we know the percent charge at all times
 		canon = parent;
 
+		// Save initial position
 		startXPos = transform.position.x;
-		minDist = Canons.minDistance;
-		maxDist = Canons.maxDistance;
 	}
 
 	public void StopMoving(){
@@ -43,7 +45,7 @@ public class CanonReticule : MonoBehaviour {
 		// Play animation
 		// TODO
 
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(PostMoveAliveTime);
 
 		// Die
 		Destroy(gameObject);
@@ -56,12 +58,8 @@ public class CanonReticule : MonoBehaviour {
 	void FixedUpdate(){
 		if(isMoving){
 			Vector3 newpos = transform.position;
-			newpos.x = startXPos + minDist + (maxDist * canon.percentCharge);
-			// TODO Stay aligned on y axis also
-			// We could be the child of this guy : )
+			newpos.x = startXPos + canon.relativeDistance;
 			transform.position = newpos;
-		}else{
-
 		}
 	}
 }

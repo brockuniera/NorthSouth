@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 //Abstract base class for all UnitControllers, like soldier, horses, etc
-public abstract class UnitController : MonoBehaviour{
+public abstract class UnitController : ExtraBehaviour{
 
 	//Inputs
 	//
@@ -10,10 +10,6 @@ public abstract class UnitController : MonoBehaviour{
 	protected InputStruct input;
 	public void InputMessage(InputStruct i){ lastinput = input; input = i; }
 
-	//PlayerSpecific
-	//
-	//Player this belongs to
-	protected int playerNumber;
 	//The direction the player presses to input 'back'
 	// P1: -1
 	// P2:  1
@@ -53,7 +49,6 @@ public abstract class UnitController : MonoBehaviour{
 		if(layername != "Player 1" && layername != "Player 2")
 			Debug.LogError("UnitController layer not setup correctly!");
 
-		playerNumber = layername.Contains("1") ? 1 : 2;
 		backdir = playerNumber == 1 ? (sbyte)-1 : (sbyte)1;
 	}
 

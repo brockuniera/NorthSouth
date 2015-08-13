@@ -1,33 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
-using GameObjectExtensions;
 
-//A single SubCanon
+// A single SubCanon
 public class SubCanon : ControlledUnit {
 
 	//
-	//Movement
+	// Movement
 	//
 
-	//Input speeds
+	// Input speeds
 	//
-	//Normal movement speed
+	// Normal movement speed
 	public float MoveSpeed;
-	//Speed while charging
+	// Speed while charging
 	public float SlowSpeed;
 
 	// Are we currently moving slow?
 	public bool isSlow { get; set; }
 
 	//
-	//Attacking
+	// Attacking
 	//
 
-	// Drawn reticule
+	// Reticule prefab
 	public CanonReticule Reticule;
+	// Reference to an instance of the reticule
 	private CanonReticule m_reticule;
 	
-	//Projectilve prefab
+	// Projectilve prefab
 	public Canonball CanonballToSpawn;
 
 	//Where to spawn projectile, relative to transform.position
@@ -37,19 +37,7 @@ public class SubCanon : ControlledUnit {
 	private Transform t_reticule;
 
 	//
-	//Unity Callbacks
-	//
-
-	void Start(){
-		// Nothing
-	}
-
-	void Update(){
-		// Nothing
-	}
-
-	//
-	//Attacking methods
+	// Attacking methods
 	//
 
 	public void StartCharging(){
@@ -60,6 +48,7 @@ public class SubCanon : ControlledUnit {
 			Quaternion.identity
 		) as CanonReticule;
 
+		// Reticule moves relative to us
 		m_reticule.transform.parent = transform;
 
 		// Setup our reticule
@@ -75,13 +64,14 @@ public class SubCanon : ControlledUnit {
 		) as Canonball;
 
 		// Get parent
-		Canons parent = transform.parent.gameObject.GetComponent<Canons>() as Canons;
+		;
 
 		// Tell our cball whats up
-		cball.Setup(parent.percentCharge);
+		cball.Setup(GetComponentInParent<Canons>().relativeDistance);
 
 		// Tell our reticule to stop moving
 		m_reticule.StopMoving();
+		m_reticule = null;
 	}
 
 	public void Cooldown(){
@@ -89,25 +79,14 @@ public class SubCanon : ControlledUnit {
 	}
 
 	//
-	//Movement Helpers
-	//
-
-	private void SetVelocityFromInput(){
-		float speed = isSlow ? SlowSpeed : MoveSpeed;
-		rb2d.velocity = new Vector2(0, input.y * speed);
-	}
-
-	//
 	// Movement
 	//
 
 	public override void Act(){
-
-		//Movement
+		// Movement
 		//
-
-		SetVelocityFromInput();
+		float speed = isSlow ? SlowSpeed : MoveSpeed;
+		rb2d.velocity = new Vector2(0, input.y * speed);
 	}
-
 }
 
