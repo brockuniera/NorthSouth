@@ -16,16 +16,6 @@ public abstract class UnitController : ExtraBehaviour{
 	protected sbyte backdir{ get; private set; }
 
 	//
-	//Selectability
-	//
-	
-	private bool selectable = true;
-	public bool isSelectable {
-		get { return selectable; }
-		set { selectable = value; }
-	}
-
-	//
 	//Component caching
 	//
 	

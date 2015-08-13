@@ -62,10 +62,7 @@ public class Horses : UnitController{
 		get { return limbo; }
 		set{
 			if(value){
-				isSelectable = false;
 				Active = false;
-			}else{
-				isSelectable = true;
 			}
 			limbo = value;
 		}
@@ -147,7 +144,7 @@ public class Horses : UnitController{
 		//
 		if(!Active){
 			//Non empty input wakes us up
-			if(!input.isEmpty)
+			if(!inLimbo && !input.isEmpty)
 				Active = true;
 			else
 				//Don't act on empty input

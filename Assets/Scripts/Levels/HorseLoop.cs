@@ -13,7 +13,7 @@ public class HorseLoop : ExtraBehaviour {
 	// Determined by first horse to die
 	private Vector2 respawnPos;
 
-	IEnumerator SpawnHorseAfter(){
+	private IEnumerator SpawnHorseAfter(){
 
 		yield return new WaitForSeconds(TimeToRespawn);
 
@@ -48,10 +48,6 @@ public class HorseLoop : ExtraBehaviour {
 		if(dad.controlledSubUnits.Count == 0){
 			// Horse controller should be in limbo
 			dad.inLimbo = true;
-
-			// Automatically select new unit if Horses were active
-			if(GetOtherPlayer().GetComponent<PlayerController>().activeController is Horses)
-				GetOtherPlayer().SendMessage("CycleUnits");
 
 			StartCoroutine(SpawnHorseAfter());
 		}
