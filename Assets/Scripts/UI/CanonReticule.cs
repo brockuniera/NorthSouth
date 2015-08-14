@@ -43,7 +43,7 @@ public class CanonReticule : MonoBehaviour {
 
 	private IEnumerator	coro_stopMoving(){
 		// Play animation
-		// TODO
+		GetComponent<Animator>().SetTrigger("ToTargetFound");
 
 		yield return new WaitForSeconds(PostMoveAliveTime);
 
