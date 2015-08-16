@@ -206,6 +206,7 @@ MonoBehaviour:
   Player2Units:
   - {fileID: 11481634, guid: 0e1525e357b91400b81462e37043b3c1, type: 2}
   - {fileID: 11409766, guid: 4fb78dd79c34a4c6cb762cc0c2028a8e, type: 2}
+  - {fileID: 11449352, guid: fe86ebf2666884374a271529da97ce60, type: 2}
 --- !u!114 &277745891
 MonoBehaviour:
   m_ObjectHideFlags: 0

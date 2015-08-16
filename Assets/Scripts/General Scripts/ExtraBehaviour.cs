@@ -7,9 +7,16 @@ public class ExtraBehaviour : MonoBehaviour {
 	// Player numbers
 	//
 
+	private int cached_player_number = -1;
+
 	public int playerNumber {
 		get {
-			return LayerMask.LayerToName(gameObject.layer).Contains("1") ? 1 : 2;
+			if(cached_player_number == -1){
+				// Discover and cache the number
+				cached_player_number =
+					LayerMask.LayerToName(gameObject.layer).Contains("1") ? 1 : 2;
+			}
+			return cached_player_number;
 		}
 	}
 

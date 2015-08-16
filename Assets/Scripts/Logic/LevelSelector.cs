@@ -64,7 +64,6 @@ public class LevelSelector : MonoBehaviour {
 		Levels = GameObject.FindGameObjectsWithTag("Level");
 		if(Levels == null){
 			Debug.LogError("Couldn't find any levels in Hierchay!");
-			Application.Quit();
 		}
 		currentLevel = Levels[0];
 	}

@@ -75,7 +75,9 @@ public class Canonball : ExtraBehaviour {
 		transform.position = newpos;
 
 		// Explode when we're close enough
-		if(transform.position.x > f_goalposx - GoalEpsilon){
+		if((isPlayerOne && transform.position.x > f_goalposx - GoalEpsilon) || 
+				(isPlayerTwo && transform.position.x < f_goalposx + GoalEpsilon))
+		{
 			Die();
 		}
 	}

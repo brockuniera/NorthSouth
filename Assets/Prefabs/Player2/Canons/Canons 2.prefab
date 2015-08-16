@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlledSubUnits: {fileID: 0}
-  ChildUnit: {fileID: 11476630, guid: 4d8404534d93e4847b2e768917aceba5, type: 2}
+  ChildUnit: {fileID: 11476630, guid: 0ac464b891a6749d198ceeda0110228b, type: 2}
   ChargingTime: 3
   CooldownTime: .300000012
   PostShootSlowMoveTime: .400000006
