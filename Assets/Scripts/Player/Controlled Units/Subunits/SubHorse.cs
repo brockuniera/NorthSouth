@@ -50,10 +50,6 @@ public class SubHorse : ControlledUnit {
 	private enum AttackState {None, Attacking, MoveNoAttack};
 	private AttackState attacking = AttackState.None;
 
-	//Hurtbox prefab
-	public Hurtbox hurtbox;
-	private Hurtbox currentHurtbox;
-
 	//Length hurtbox is present
 	public float AttackingTime;
 	//How long we have to wait before inputting attack again, after AttackingTime
@@ -183,8 +179,6 @@ public class SubHorse : ControlledUnit {
 				break;
 			case AttackState.Attacking:
 				if(attackTimer.isDone){
-					currentHurtbox.Die();
-					currentHurtbox = null;
 					attacking = AttackState.MoveNoAttack;
 					attackTimer.SetTimer(MoveNoAttackTime);
 				}
@@ -199,9 +193,7 @@ public class SubHorse : ControlledUnit {
 
 	//spawn the hurt box
 	public override void Attack(){
-		Hurtbox hbox = (Hurtbox)Instantiate(hurtbox, rb2d.position, Quaternion.identity);
-		hbox.transform.parent = transform;
-		currentHurtbox = hbox;
+		SpawnHurtbox(rb2d.position, AttackingTime, followthis: transform);
 	}
 
 	void OnCollisionExit2D(){

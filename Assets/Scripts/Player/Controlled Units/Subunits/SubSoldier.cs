@@ -22,6 +22,10 @@ public class SubSoldier : ControlledUnit {
 	//Time until action
 	public float AutoCatchupTime;
 
+	// Shooting
+	//
+	// Relative position to rb2d.position bullet is spawned at.
+	public Vector2 MuzzleRelative = Vector2.zero;
 
 	//'Catchup' variables, used to move to GoalPosition
 	//
@@ -67,12 +71,12 @@ public class SubSoldier : ControlledUnit {
 	//
 
 	void Start(){
-		//Moving diagonally
+		// Moving diagonally, cached
 		diagSpeedComponent = MoveSpeed / Mathf.Sqrt(2);
 		catchupTimer = new Timer();
 	}
 
-	void Update(){
+	void FixedUpdate(){
 		anim.SetBool("IsMoving", rb2d.velocity != Vector2.zero);
 	}
 
@@ -86,7 +90,9 @@ public class SubSoldier : ControlledUnit {
 		if(!isCatchingUp){
 			isCatchingUp = true;
 			//Calculate how close to get before stopping
-			minDist = precise ? PreciseCatchupDist : CatchupMinDist + RandomMinDistFactor * Random.value;
+			minDist = precise ?
+				PreciseCatchupDist :
+				CatchupMinDist + RandomMinDistFactor * Random.value;
 			//TODO If we're doing a precise catchup over a short distance,
 			// we should play something like a crouching animation to make it
 			// look more solid or something
@@ -150,22 +156,16 @@ public class SubSoldier : ControlledUnit {
 			SetVelocityFromInput();
 		}
 
-		//DEBUG
-		//if(playerNumber == 1 && this == transform.parent.GetComponent<ChildrenList>().At(1))
-		//Debug.Log("Current: " + rb2d.position + " Goal: " + GoalPosition + " catchup: " + catchup);
-
 	}
 
 	//Spawn bullets
 	public override void Attack(){
 		rb2d.velocity = Vector2.zero;
-		Instantiate(Projectile, rb2d.position, Quaternion.identity);
+		anim.SetTrigger("ToShoot");
+		Instantiate(Projectile, rb2d.position + MuzzleRelative, Quaternion.identity);
 	}
 
-	//TODO Oncollsion, we could swap leaders?
-	void OnCollisionEnter2D(){
-		//print("Test");
-	}
+	//TODO OnCollisionEnter2D, we could swap leaders?
 
 	void OnCollisionExit2D(){
 		StartCatchingUp();

@@ -52,6 +52,10 @@ public class PlayerController : MonoBehaviour {
 	//Unit selectors
 	//
 
+	// TODO These methods obviously fail if no children exist
+	// Also we never even use them.
+	// If we do end up using them, cache them.
+
 	public Horses horses{
 		get { return (Horses)GetComponentsInChildren<Horses>()[0]; }
 	}

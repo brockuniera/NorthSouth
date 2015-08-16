@@ -48,7 +48,13 @@ public class ExtraBehaviour : MonoBehaviour {
 	// 1 DAMAGE, and RADIUS Unity units.
 	//
 	// The hurtbox is spawned for whichever player this MonoBehaviour is.
-	protected void SpawnHurtbox(Vector2 position, float time, float radius=10.0f, int damage=1){
+	protected void SpawnHurtbox(
+			Vector2 position,
+			float time,
+			float radius=10.0f,
+			int damage=1,
+			Transform followthis=null
+		){
 		Hurtbox hbox = ((GameObject)Instantiate(
 				Resources.Load("Hurtbox"),
 				position,
@@ -58,7 +64,7 @@ public class ExtraBehaviour : MonoBehaviour {
 		// Setup hurtbox with correct settings
 		hbox.Damage = damage;
 		hbox.DieAfter(time);
-
+		hbox.transform.parent = followthis;
 		hbox.gameObject.layer = LayerMask.NameToLayer("P" + playerNumber + " Hitbox");
 	}
 }

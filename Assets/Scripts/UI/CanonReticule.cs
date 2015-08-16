@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof (Animator))]
 public class CanonReticule : MonoBehaviour {
 
 	// How long the reticule stays alive after reaching its destination

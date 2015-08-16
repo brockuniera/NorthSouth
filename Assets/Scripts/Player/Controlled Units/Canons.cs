@@ -14,7 +14,7 @@ public class Canons : UnitController{
 	// Minimum distance canonball can travel
 	public static float minDistance = 0.2f;
 	// Unity units per Time.fixedDeltaTime
-	public static float CanonballVelocity = 14.0f;
+	public static float CanonballVelocity = 44.0f;
 
 	//
 	//Attacking FSM

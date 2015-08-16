@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class ControlledUnit : MonoBehaviour {
+public abstract class ControlledUnit : ExtraBehaviour {
 
 	//
 	//Inputs
@@ -13,12 +13,8 @@ public abstract class ControlledUnit : MonoBehaviour {
 	//
 	//Player specifics
 	//
-	protected int playerNumber; 
 	protected sbyte forwarddir { get; private set; }
 	protected sbyte backdir { get; private set; }
-
-	public bool isPlayerOne { get{ return playerNumber == 1; }}
-	public bool isPlayerTwo { get{ return playerNumber == 2; }}
 
 	//
 	//Set HP
@@ -43,8 +39,7 @@ public abstract class ControlledUnit : MonoBehaviour {
 		anim = GetComponent<Animator>();
 		rb2d = GetComponent<Rigidbody2D>();
 		health = InitialHealth;
-		playerNumber = LayerMask.LayerToName(gameObject.layer).Contains("1") ? 1 : 2;
-		forwarddir = playerNumber == 1 ? (sbyte)1 : (sbyte)-1;
+		forwarddir = isPlayerOne ? (sbyte)1 : (sbyte)-1;
 		backdir = (sbyte)-forwarddir;
 	}
 
