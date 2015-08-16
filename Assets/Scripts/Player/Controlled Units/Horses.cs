@@ -99,7 +99,7 @@ public class Horses : UnitController{
 	void Start(){
 		//Player specifc formations
 		VerticalFormation = new Vector2[3];
-		if(playerNumber == 1){
+		if(isPlayerOne){
 			HorizontalFormation = new Vector2[3] {
 				new Vector2(0,  0),
 				new Vector2(-2,  0),
@@ -110,16 +110,16 @@ public class Horses : UnitController{
 				new Vector2(0,  -2),
 				new Vector2(0,  -4)
 			};
-		}else if(playerNumber == 2){
+		}else if(isPlayerTwo){
 			HorizontalFormation = new Vector2[3] {
-				new Vector2(-4,  0),
-				new Vector2(-2,  0),
-				new Vector2(0,  0)
+				new Vector2(0,  0),
+				new Vector2(2,  0),
+				new Vector2(4,  0)
 			};
 			VerticalFormation = new Vector2[3] {
-				new Vector2(0,  -4),
+				new Vector2(0,  0),
 				new Vector2(0,  -2),
-				new Vector2(0,  0)
+				new Vector2(0,  -4)
 			};
 		}
 
