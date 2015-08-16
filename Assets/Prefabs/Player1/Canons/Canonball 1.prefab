@@ -58,7 +58,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21819c1d59f0c405aafd5fbea49c53ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HurtboxAliveTime: .100000001
+  HurtboxAliveTime: 10
+  GoalEpsilon: .300000012
+  FlightPath:
+    serializedVersion: 2
+    m_Curve:
+    - time: .00344674801
+      value: .0017977953
+      inSlope: .555882096
+      outSlope: .555882096
+      tangentMode: 0
+    - time: 1
+      value: -.000832998194
+      inSlope: -.600455523
+      outSlope: -.600455523
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  MaxHeight: 16
 --- !u!212 &21298142
 SpriteRenderer:
   m_ObjectHideFlags: 1

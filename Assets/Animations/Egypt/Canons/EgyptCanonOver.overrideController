@@ -1,0 +1,14 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: EgyptCanonOver
+  m_Controller: {fileID: 9100000, guid: 89be57867d3104ba4b1f8a7e4c6a2eb2, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 72c44e2d276b9436b8af27e4d69fae0c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ffb938bd2cbf54d39b3355aa7a05c8bd, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a40a25589b495b4489b165ecbad7e571, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 488a47af17bf2499689683c7442cb1ab, type: 2}

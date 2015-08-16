@@ -11,8 +11,8 @@ GameObject:
   - 212: {fileID: 21298142}
   - 95: {fileID: 9538988}
   - 114: {fileID: 11429606}
-  m_Layer: 10
-  m_Name: Canonball 1
+  m_Layer: 13
+  m_Name: Canonball 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 181568}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.4500008, y: -3.99000001, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -39,10 +39,10 @@ Animator:
   m_GameObject: {fileID: 181568}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b119b30869f999246a66fbc680f5d478, type: 2}
+  m_Controller: {fileID: 22100000, guid: bf737e03fe38243168383086176e0e2c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -59,6 +59,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HurtboxAliveTime: .100000001
+  GoalEpsilon: .200000003
+  FlightPath:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  MaxHeight: 12
 --- !u!212 &21298142
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -83,7 +90,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300020, guid: 87b7c159e09b36e469297cd4b22644ad, type: 3}
+  m_Sprite: {fileID: 21300026, guid: dd3c0e1a425264048a7786dc472955b9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:

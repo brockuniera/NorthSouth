@@ -10,8 +10,8 @@ GameObject:
   - 4: {fileID: 412158}
   - 114: {fileID: 11439846}
   - 114: {fileID: 11449352}
-  m_Layer: 8
-  m_Name: Canons 1
+  m_Layer: 11
+  m_Name: Canons 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

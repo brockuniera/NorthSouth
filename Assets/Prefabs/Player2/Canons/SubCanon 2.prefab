@@ -13,8 +13,8 @@ GameObject:
   - 61: {fileID: 6159060}
   - 95: {fileID: 9565272}
   - 114: {fileID: 11476630}
-  m_Layer: 8
-  m_Name: SubCanon 1
+  m_Layer: 11
+  m_Name: SubCanon 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,10 +69,10 @@ Animator:
   m_GameObject: {fileID: 174848}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 89be57867d3104ba4b1f8a7e4c6a2eb2, type: 2}
+  m_Controller: {fileID: 22100000, guid: e30310ecafcd747a3a64753904c2d40e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -91,8 +91,8 @@ MonoBehaviour:
   InitialHealth: 1
   MoveSpeed: 6
   SlowSpeed: 2
-  Reticule: {fileID: 11455688, guid: 8533094d549af4f8c9f1f08d23f3437d, type: 2}
-  CanonballToSpawn: {fileID: 11429606, guid: 9f7e18cb2770f43f98826ff8cdc4f92a, type: 2}
+  Reticule: {fileID: 11455688, guid: 5bef7ed0a53f849eaa4974cff1ce0636, type: 2}
+  CanonballToSpawn: {fileID: 11429606, guid: 83379c8ba6e8e4cfeafbead36aead728, type: 2}
   MuzzleRelative: {x: 1, y: 0}
 --- !u!212 &21233016
 SpriteRenderer:
@@ -118,7 +118,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a36ce1e67c88f6846a90afda44ac1a09, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 399e72c62f422914dbad1804d72d994e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
