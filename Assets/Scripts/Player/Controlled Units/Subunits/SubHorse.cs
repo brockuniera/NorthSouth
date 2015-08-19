@@ -14,12 +14,8 @@ public class SubHorse : ControlledUnit {
 	public float NoInputSpeed;
 	//Forward input
 	public float ForwardInputSpeed;
-	//Diag Vector
-	public Vector2 DiagonalAngle;
 	//Up or Down input
 	public float DiagonalInputSpeed;
-	//This is the vector we actually use for diagonal movement
-	private Vector2 diagonalMovementVector;
 
 	//
 	//'Catchup' variables, used to move to GoalPosition
@@ -81,8 +77,6 @@ public class SubHorse : ControlledUnit {
 	//
 
 	void Start(){
-		DiagonalAngle.Normalize();
-		diagonalMovementVector = DiagonalAngle * DiagonalInputSpeed;
 		attackTimer = new Timer();
 
 		//Player 2 specific: Guy On Horse
@@ -139,10 +133,9 @@ public class SubHorse : ControlledUnit {
 
 	private void SetVelocityFromInput(){
 		Vector2 movement;
-		//move diagonally
 		if(input.y != 0){
-			movement = diagonalMovementVector;
-			movement.y *= input.y;
+			movement = new Vector2(NoInputSpeed, 0);
+			movement.y = input.y * DiagonalInputSpeed;
 		}else{
 			if(input.x == forwarddir){
 				movement = new Vector2(ForwardInputSpeed, 0);
@@ -152,6 +145,7 @@ public class SubHorse : ControlledUnit {
 				movement = Vector2.zero;
 			}
 		}
+
 		rb2d.velocity = movement;
 	}
 
