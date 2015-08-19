@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-//for List<T>
-using System.Collections.Generic;
-
 [RequireComponent (typeof (PlayerInputHandler))]
 [RequireComponent (typeof (Chooser))]
 
@@ -25,6 +22,13 @@ public class PlayerController : MonoBehaviour {
 	//Should input be cleared on next Update()?
 	private bool toResetInput = false;
 
+	// The icon that bobs over units' heads
+	//
+	// Prefab
+	public CurrentIcon CurrentIconPrefab;
+	// Instance
+	private CurrentIcon _currentUnitIcon;
+
 	//
 	//Public methods
 	//
@@ -32,6 +36,7 @@ public class PlayerController : MonoBehaviour {
 	public void InitializeUnitController(){
 		_chooser.Reset();
 		_currentUnit = _chooser.GetNextUnit();
+		_currentUnitIcon.HoverOver(_currentUnit);
 	}
 
 	// Cycle to the next unit in our list of controlled units
@@ -41,6 +46,7 @@ public class PlayerController : MonoBehaviour {
 			_currentUnit.InputMessage(InputStruct.Empty); //give null message
 			_currentUnit = next;
 		}
+		_currentUnitIcon.HoverOver(_currentUnit);
 	}
 	
 	// Returns the Unit Controller currently receiving input
@@ -73,23 +79,22 @@ public class PlayerController : MonoBehaviour {
 	//
 
 	void Awake(){
-		//
 		//Setup references
-
 		_chooser = GetComponent<Chooser>();
 		inputHandler = GetComponent<PlayerInputHandler>();
+	}
 
+	void Start(){
 		//get player number from name (probably a bad idea)
 		//split name by spaces and get the second string returned
-		if(name != "Player 1" && name != "Player 2")
-			Application.Quit(); 
-
 		string s = name.Split(' ')[1];
 		inputHandler.SetPlayerKeyBindings(System.Convert.ToInt32(s));
 
-		//
-		//Setup layers; layer is based off name
+		// Setup layers; layer is based off name
 		gameObject.layer = LayerMask.NameToLayer(name);
+
+		// Create our instance of CurrentIcon
+		_currentUnitIcon = (CurrentIcon)Instantiate(CurrentIconPrefab);
 	}
 	
 	void Update(){
