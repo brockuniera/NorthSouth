@@ -157,6 +157,10 @@ public class SubHorse : ControlledUnit {
 		//Movement
 		//
 
+		if(input.x == backdir && attacking == AttackState.Attacking){
+			input.x = 0;
+		}
+
 		SetVelocityFromInput();
 		CatchUp();
 
