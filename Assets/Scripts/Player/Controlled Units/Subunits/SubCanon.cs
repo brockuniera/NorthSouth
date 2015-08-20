@@ -67,7 +67,7 @@ public class SubCanon : ControlledUnit {
 		;
 
 		// Tell our cball whats up
-		cball.Setup(GetComponentInParent<Canons>().relativeDistance);
+		cball.Setup(GetComponentInParent<Canons>().relativeDistance, m_reticule);
 
 		// Tell our reticule to stop moving
 		m_reticule.StopMoving();

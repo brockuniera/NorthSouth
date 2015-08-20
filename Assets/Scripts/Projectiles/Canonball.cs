@@ -3,9 +3,6 @@ using System.Collections;
 
 public class Canonball : ExtraBehaviour {
 
-	// How long hurtbox stays active when the canonball stops
-	public float HurtboxAliveTime = .1f;
-
 	// How close we can get to goal before blowing up
 	public float GoalEpsilon = .2f;
 
@@ -18,17 +15,27 @@ public class Canonball : ExtraBehaviour {
 	// 1 dimensional vector of distance on x axis
 	private float f_distance;
 
+	// Flight path canonball takes
 	public AnimationCurve FlightPath;
+	// MaxHeight is a function of percentdistance
+	public AnimationCurve MaxHeightFunction;
+	//Max height
 	public float MaxHeight = 12.0f;
+	// Max height we actually use
+	private float f_finalMaxHeight;
+
+	// The reticule we want to destroy
+	private CanonReticule reticuleToDestroy;
 
 	// PERCENTCHARGE: From canons.cs, percent charge
 	// of our canons. We'll grab the distance etc from
 	// him too.
-	public void Setup(float distance){
+	public void Setup(float distance, CanonReticule reticule){
 		f_goalposx = transform.position.x + distance;
 		f_startposx = transform.position.x;
 		f_startposy = transform.position.y;
 		f_distance = distance;
+		reticuleToDestroy = reticule;
 
 		// We need to play the full animation over the entire
 		// course of the canonball.
@@ -37,17 +44,17 @@ public class Canonball : ExtraBehaviour {
 		// Animation finishes in one second
 		float invtime = Canons.CanonballVelocity / distance;
 		GetComponent<Animator>().speed *= invtime;
+
+		// Figure out our actual max height to use
+		float percentDist =
+			(Mathf.Abs(distance) - Canons.minDistance) /
+			(Canons.maxDistance - Canons.minDistance);
+		f_finalMaxHeight = MaxHeightFunction.Evaluate(percentDist) * MaxHeight;
 	}
 
-	// Coroutine for exploding after we reach our goal
 	private void Die(){
-		// Spawn explosion hitbox
-		// TODO Explosion animation
-
-		// Spawn a hurtbox at where we die, lasting for HurtboxAliveTime
-		SpawnHurtbox(transform.position, HurtboxAliveTime);
-
-		Object.Destroy(gameObject);
+		Destroy(gameObject);
+		reticuleToDestroy.Die();
 	}
 
 	//
@@ -55,26 +62,26 @@ public class Canonball : ExtraBehaviour {
 	//
 
 	void FixedUpdate(){
-		// Move Vel * fixedDeltaTime every fixedupdate
-		// Using rigidbody.velocity
 		Vector3 newpos = transform.position;
 
 		// x pos
 		//
-		float frameDist = Canons.CanonballVelocity * Time.deltaTime;
+		float frameDist = Canons.CanonballVelocity * Time.fixedDeltaTime;
 		if(isPlayerTwo)
 			frameDist = -frameDist;
 		newpos.x += frameDist;
 
 		// y pos
 		//
-		// TODO Will this work for Player 2?
 		float percentDist = (newpos.x - f_startposx) / f_distance;
-		newpos.y = FlightPath.Evaluate(percentDist) * MaxHeight + f_startposy;
+		newpos.y = FlightPath.Evaluate(percentDist) * f_finalMaxHeight + f_startposy;
 
+		// Set pos
+		//
 		transform.position = newpos;
 
 		// Explode when we're close enough
+		//
 		if((isPlayerOne && transform.position.x > f_goalposx - GoalEpsilon) || 
 				(isPlayerTwo && transform.position.x < f_goalposx + GoalEpsilon))
 		{

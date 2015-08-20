@@ -1,13 +1,24 @@
 fileFormatVersion: 2
 guid: a06d391719a6ebe49a95612c9aa13cb7
-timeCreated: 1439920734
+timeCreated: 1440031965
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: aztec cannon explode (42x42) ver 1_0
+    21300002: aztec cannon explode (42x42) ver 1_1
+    21300004: aztec cannon explode (42x42) ver 1_2
+    21300006: aztec cannon explode (42x42) ver 1_3
+    21300008: aztec cannon explode (42x42) ver 1_4
+    21300010: aztec cannon explode (42x42) ver 1_5
+    21300012: aztec cannon explode (42x42) ver 1_6
+    21300014: aztec cannon explode (42x42) ver 1_7
+    21300016: aztec cannon explode (42x42) ver 1_8
+    21300018: aztec cannon explode (42x42) ver 1_9
+    21300020: aztec cannon explode (42x42) ver 1_10
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -26,29 +37,139 @@ TextureImporter:
   cubemapConvolutionSteps: 8
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: -2
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
-    aniso: -1
+    filterMode: 0
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: aztec cannon explode (42x42) ver 1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 42
+        width: 42
+        height: 42
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: aztec cannon explode (42x42) ver 1_1
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 42
+        width: 42
+        height: 42
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: aztec cannon explode (42x42) ver 1_2
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 42
+        width: 42
+        height: 42
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: aztec cannon explode (42x42) ver 1_3
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 42
+        width: 42
+        height: 42
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: aztec cannon explode (42x42) ver 1_4
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 42
+        width: 42
+        height: 42
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: aztec cannon explode (42x42) ver 1_5
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 42
+        width: 42
+        height: 42
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: aztec cannon explode (42x42) ver 1_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 42
+        height: 42
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: aztec cannon explode (42x42) ver 1_7
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 0
+        width: 42
+        height: 42
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: aztec cannon explode (42x42) ver 1_8
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 0
+        width: 42
+        height: 42
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: aztec cannon explode (42x42) ver 1_9
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 0
+        width: 42
+        height: 42
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: aztec cannon explode (42x42) ver 1_10
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 0
+        width: 42
+        height: 42
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
   assetBundleName: 

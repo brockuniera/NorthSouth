@@ -2,10 +2,14 @@
 using System.Collections;
 
 [RequireComponent (typeof (Animator))]
-public class CanonReticule : MonoBehaviour {
+public class CanonReticule : ExtraBehaviour {
 
-	// How long the reticule stays alive after reaching its destination
-	public float PostMoveAliveTime = 1.0f;
+
+	// How long hurtbox stays active when the canonball stops
+	public float HurtboxAliveTime = .1f;
+
+	// The explosion GO we should spawn
+	public GameObject ExplosionToSpawn;
 
 	// Are we still moving to the right?
 	// Or has a target been chosen to die?
@@ -39,16 +43,15 @@ public class CanonReticule : MonoBehaviour {
 		transform.parent = null;
 
 		// Play animation or whatever, and then die
-		StartCoroutine(coro_stopMoving());
+		GetComponent<Animator>().SetTrigger("ToFast");
 	}
 
-	private IEnumerator	coro_stopMoving(){
-		// Play animation
-		GetComponent<Animator>().SetTrigger("ToFast");
+	public void Die(){
+		// Spawn explosion hitbox
+		Instantiate(ExplosionToSpawn, transform.position, Quaternion.identity);
 
-		yield return new WaitForSeconds(PostMoveAliveTime);
-
-		// Die
+		// Spawn a hurtbox at where we die, lasting for HurtboxAliveTime
+		SpawnHurtbox(transform.position, HurtboxAliveTime);
 		Destroy(gameObject);
 	}
 

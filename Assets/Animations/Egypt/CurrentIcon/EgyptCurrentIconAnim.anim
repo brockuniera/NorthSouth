@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: AztecCurrentIconAnim
+  m_Name: EgyptCurrentIconAnim
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -18,17 +18,17 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
+      value: {fileID: 21300000, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
     - time: .100000001
-      value: {fileID: 21300002, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
+      value: {fileID: 21300002, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
     - time: .200000003
-      value: {fileID: 21300004, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
+      value: {fileID: 21300004, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
     - time: .300000012
-      value: {fileID: 21300006, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
+      value: {fileID: 21300006, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
     - time: .400000006
-      value: {fileID: 21300008, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
+      value: {fileID: 21300008, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
     - time: .5
-      value: {fileID: 21300010, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
+      value: {fileID: 21300010, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -47,12 +47,12 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
-    - {fileID: 21300002, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
-    - {fileID: 21300004, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
-    - {fileID: 21300006, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
-    - {fileID: 21300008, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
-    - {fileID: 21300010, guid: 947bc6f424ebbe14d96bcbf3b641212f, type: 3}
+    - {fileID: 21300000, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
+    - {fileID: 21300002, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
+    - {fileID: 21300004, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
+    - {fileID: 21300006, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
+    - {fileID: 21300008, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
+    - {fileID: 21300010, guid: beca1eb270f88f94fb3b5ea584b5c1c1, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_StartTime: 0
